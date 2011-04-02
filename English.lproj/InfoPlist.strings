@@ -1,0 +1,6 @@
+/* Localized versions of Info.plist keys */
+
+CFBundleName = "Timecode Display";
+CFBundleShortVersionString = "0.9";
+CFBundleGetInfoString = "0.9, © 2011 Figure 53";
+NSHumanReadableCopyright = "© 2011 Figure 53";

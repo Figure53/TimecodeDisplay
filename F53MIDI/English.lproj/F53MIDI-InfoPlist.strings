@@ -1,0 +1,6 @@
+/* Localized versions of Info.plist keys */
+
+CFBundleName = "F53MIDI";
+CFBundleShortVersionString = "1.0";
+CFBundleGetInfoString = "1.0";
+NSHumanReadableCopyright = "";

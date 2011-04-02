@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'Timecode Display' target in the 'Timecode Display' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
