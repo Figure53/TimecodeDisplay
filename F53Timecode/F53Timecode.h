@@ -18,29 +18,29 @@
  
  */
 typedef struct {
-	unsigned int	fps;			/**< Base frames per second -- i.e., the number of frames per timecode "second". 24, 25, or 30, but extensible to others if necessary **/
-	BOOL			videoSpeed;		/**< Pulls timecode down to video speed -- if true, 24 -> 23.976; 25 -> 24.975; 30 -> 29.97 **/
-	BOOL			dropFrame;		/**< Specifies dropframe counting system; ignored if fps != 30 **/
+    unsigned int    fps;            /**< Base frames per second -- i.e., the number of frames per timecode "second". 24, 25, or 30, but extensible to others if necessary **/
+    BOOL            videoSpeed;     /**< Pulls timecode down to video speed -- if true, 24 -> 23.976; 25 -> 24.975; 30 -> 29.97 **/
+    BOOL            dropFrame;      /**< Specifies dropframe counting system; ignored if fps != 30 **/
 } F53Framerate;
 
 //! Shorthand for framerate of 23.976 frames per second
-#define	F53Framerate23976	[F53Timecode framerateWithFPS:24 videoSpeed:YES dropFrame:NO]
+#define    F53Framerate23976    [F53Timecode framerateWithFPS:24 videoSpeed:YES dropFrame:NO]
 //! Shorthand for framerate of 24 frames per second
-#define	F53Framerate24		[F53Timecode framerateWithFPS:24 videoSpeed:NO dropFrame:NO]
+#define    F53Framerate24        [F53Timecode framerateWithFPS:24 videoSpeed:NO dropFrame:NO]
 //! Shorthand for framerate of 24.975 frames per second
-#define	F53Framerate24975	[F53Timecode framerateWithFPS:25 videoSpeed:YES dropFrame:NO]
+#define    F53Framerate24975    [F53Timecode framerateWithFPS:25 videoSpeed:YES dropFrame:NO]
 //! Shorthand for framerate of 25 frames per second
-#define	F53Framerate25		[F53Timecode framerateWithFPS:25 videoSpeed:NO dropFrame:NO]
+#define    F53Framerate25        [F53Timecode framerateWithFPS:25 videoSpeed:NO dropFrame:NO]
 //! Shorthand for framerate of 29.97 frames per second, non-drop
-#define	F53Framerate2997nd	[F53Timecode framerateWithFPS:30 videoSpeed:YES dropFrame:NO]
+#define    F53Framerate2997nd    [F53Timecode framerateWithFPS:30 videoSpeed:YES dropFrame:NO]
 //! Shorthand for framerate of 29.97 frames per second, drop frame
-#define	F53Framerate2997df	[F53Timecode framerateWithFPS:30 videoSpeed:YES dropFrame:YES]
+#define    F53Framerate2997df    [F53Timecode framerateWithFPS:30 videoSpeed:YES dropFrame:YES]
 //! Shorthand for framerate of 30 frames per second, non-drop
-#define	F53Framerate30nd		[F53Timecode framerateWithFPS:30 videoSpeed:NO dropFrame:NO]
+#define    F53Framerate30nd        [F53Timecode framerateWithFPS:30 videoSpeed:NO dropFrame:NO]
 //! Shorthand for framerate of 30 frames per second, drop frame
-#define	F53Framerate30df		[F53Timecode framerateWithFPS:30 videoSpeed:NO dropFrame:YES]
+#define    F53Framerate30df        [F53Timecode framerateWithFPS:30 videoSpeed:NO dropFrame:YES]
 //! Shorthand for invalid framerate marker
-#define F53FramerateInvalid	[F53Timecode framerateWithFPS:1  videoSpeed:NO dropFrame:NO]
+#define F53FramerateInvalid    [F53Timecode framerateWithFPS:1  videoSpeed:NO dropFrame:NO]
 
 //! Timecode object
 /*!
@@ -59,13 +59,13 @@ typedef struct {
  F53TimecodeCoreAudioExt category extends F53Timecode to provide conversion to/from SMPTETime structs.
  */
 @interface F53Timecode : NSObject <NSCoding, NSCopying> {
-	int             _hh;
-	int             _mm;
-	int             _ss;
-	int             _ff;
-	int             _bits;
-	F53Framerate	_framerate;
-	BOOL            _negative;
+    int             _hh;
+    int             _mm;
+    int             _ss;
+    int             _ff;
+    int             _bits;
+    F53Framerate    _framerate;
+    BOOL            _negative;
 }
 
 /*!
@@ -210,7 +210,7 @@ typedef struct {
  \sa convertFramerateTo:
  \sa convertFramerateFromReelStartTo:
  */
-- (void)setFramerate:(F53Framerate)newFramerate;				// doesn't recalculate; just copies over digits and rebalances
+- (void)setFramerate:(F53Framerate)newFramerate;                // doesn't recalculate; just copies over digits and rebalances
 
 /*!
  \param newFramerate The new framerate to set.
@@ -222,16 +222,16 @@ typedef struct {
  you can use setFramerate: to set the framerate (without recalcluating) to pull the value up or down, then use
  this method to do the conversion. For example:
  <div><code>// Reverse telecine<br/>
-	F53Timecode *tc = [F53Timecode timecodeWithFramerate:F53Framerate2997nd hh:1 mm:1 ss:0 ff:23]; // 1:01:00:23 @ 29.97nd<br/>
-	[tc setFramerate:F53Framerate30]; // -> 1:01:00:23 @ 30nd<br/>
-	[tc convertFramerateTo:F53Framerate24]; // -> ca. 1:01:00:29 @ 24
+    F53Timecode *tc = [F53Timecode timecodeWithFramerate:F53Framerate2997nd hh:1 mm:1 ss:0 ff:23]; // 1:01:00:23 @ 29.97nd<br/>
+    [tc setFramerate:F53Framerate30]; // -> 1:01:00:23 @ 30nd<br/>
+    [tc convertFramerateTo:F53Framerate24]; // -> ca. 1:01:00:29 @ 24
  </code></div>
  
  \sa framerate
  \sa convertFramerateTo:
  \sa convertFramerateFromReelStartTo:
  */
-- (void)convertFramerateTo:(F53Framerate)targetFramerate;	// recalculates timing from 0:00:00:00
+- (void)convertFramerateTo:(F53Framerate)targetFramerate;    // recalculates timing from 0:00:00:00
 
 /*!
  \param newFramerate The new framerate to set.
@@ -246,7 +246,7 @@ typedef struct {
  \sa setFramerate:
  \sa convertFramerateTo:
  */
-- (void)convertFramerateFromReelStartTo:(F53Framerate)targetFramerate;	// recalculates timing from hh:00:00:00
+- (void)convertFramerateFromReelStartTo:(F53Framerate)targetFramerate;    // recalculates timing from hh:00:00:00
 
 /*!
  Called by all timing-related methods. You should not need to call this method directly.
