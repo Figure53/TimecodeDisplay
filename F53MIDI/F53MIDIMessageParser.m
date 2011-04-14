@@ -1,21 +1,21 @@
 /**
 
-@author  Kurt Revis, Christopher Ashworth
-@file    F53MIDIMessageParser.m
-@date    Created on 8/11/06.
-@brief   
+ @author  Kurt Revis
+ @file    F53MIDIMessageParser.m
 
-Copyright (c) 2001-2004, Kurt Revis.  All rights reserved.
-Copyright (c) 2006 Christopher Ashworth.  All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-* Neither the name of Kurt Revis, nor Snoize, nor the names of other contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ Copyright (c) 2001-2006, Kurt Revis. All rights reserved.
+ Copyright (c) 2006-2011, Figure 53.
+ 
+ NOTE: F53MIDI is an appropriation of Kurt Revis's SnoizeMIDI. https://github.com/krevis/MIDIApps
+ 
+ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of Kurt Revis, nor Snoize, nor the names of other contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+ 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
 **/
 
 
@@ -47,7 +47,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         return nil;
 
     _readingSysExLock = [[NSLock alloc] init];
-    _sysExTimeOut = 1.0;	// seconds
+    _sysExTimeOut = 1.0;    // seconds
     _ignoreInvalidData = NO;
 
     return self;
@@ -110,8 +110,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     // NOTE: This function is called in our MIDI processing thread.
     // (This is NOT the MIDI receive thread which CoreMIDI creates for us.)
     // All downstream processing will also be done in this thread, until someone jumps it into another.
-	
-	// CHANGED BY CA: This function is now called on the main thread.
+    
+    // CHANGED BY CA: This function is now called on the main thread.
 
     NSMutableArray *messages = nil;
     unsigned int packetCount;
@@ -276,16 +276,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 pendingDataIndex = 0;
                 
                 switch (byte & 0xF0) {            
-                    case 0x80:	// Note off
-                    case 0x90:	// Note on
-                    case 0xA0:	// Aftertouch
-                    case 0xB0:	// Controller
-                    case 0xE0:	// Pitch wheel
+                    case 0x80:    // Note off
+                    case 0x90:    // Note on
+                    case 0xA0:    // Aftertouch
+                    case 0xB0:    // Controller
+                    case 0xE0:    // Pitch wheel
                         pendingDataLength = 2;
                         break;
     
-                    case 0xC0:	// Program change
-                    case 0xD0:	// Channel pressure
+                    case 0xC0:    // Program change
+                    case 0xD0:    // Channel pressure
                         pendingDataLength = 1;
                         break;
                     

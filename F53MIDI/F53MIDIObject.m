@@ -1,21 +1,21 @@
 /**
 
-@author  Kurt Revis, Christopher Ashworth
-@file    F53MIDIObject.m
-@date    Created on Thursday March 9 2006.
-@brief   
+ @author  Kurt Revis
+ @file    F53MIDIObject.m
 
-Copyright (c) 2001-2006, Kurt Revis.  All rights reserved.
-Copyright (c) 2006 Christopher Ashworth. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-* Neither the name of Kurt Revis, nor Snoize, nor the names of other contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ Copyright (c) 2002-2006, Kurt Revis. All rights reserved.
+ Copyright (c) 2006-2011, Figure 53.
+ 
+ NOTE: F53MIDI is an appropriation of Kurt Revis's SnoizeMIDI. https://github.com/krevis/MIDIApps
+ 
+ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of Kurt Revis, nor Snoize, nor the names of other contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+ 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
 **/
 
 #import "F53MIDIObject.h"
@@ -75,10 +75,10 @@ static int midiObjectOrdinalComparator(id object1, id object2, void *context);
 int midiObjectOrdinalComparator(id object1, id object2, void *context)
 {
     unsigned int ordinal1, ordinal2;
-	
+    
     ordinal1 = [object1 ordinal];
     ordinal2 = [object2 ordinal];
-	
+    
     if (ordinal1 > ordinal2)
         return NSOrderedDescending;
     else if (ordinal1 == ordinal2)
@@ -95,9 +95,9 @@ static NSMapTable *_classToObjectsMapTable = nil;
 + (void) privateInitialize
 {
     F53Assert(self == [F53MIDIObject class]);
-	
+    
     _classToObjectsMapTable = NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 0);
-	
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(midiClientCreated:) name:F53MIDIClientCreatedInternalNotification object:nil];
 }
 
@@ -108,9 +108,9 @@ static NSMapTable *_classToObjectsMapTable = nil;
     NSString *aClassString;
     NSNotificationCenter *center;
     F53MIDIClient *client;
-	
+    
     F53Assert(self == [F53MIDIObject class]);
-	
+    
     // Send +initialMIDISetup to each leaf subclass of this class.    
     leafSubclasses = [self leafSubclasses];
     enumerator = [leafSubclasses objectEnumerator];
@@ -118,16 +118,16 @@ static NSMapTable *_classToObjectsMapTable = nil;
         Class aClass = NSClassFromString(aClassString);
         [aClass initialMIDISetup];
     }
-	
+    
     client = [F53MIDIClient sharedClient];
     center = [NSNotificationCenter defaultCenter];
-	
+    
     // Also subscribe to the object property changed notification, if it will be posted.
     // We will receive this notification and then dispatch it to the correct object.
     if ([client postsObjectPropertyChangedNotifications]) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(midiObjectPropertyChanged:) name:F53MIDIClientObjectPropertyChangedNotification object:[F53MIDIClient sharedClient]];
     }
-	
+    
     // And subscribe to object added/removed notifications, if they will be posted.
     // We will dispatch these to the correct subclass.
     if ([client postsObjectAddedAndRemovedNotifications]) {
@@ -170,9 +170,9 @@ static NSMapTable *_classToObjectsMapTable = nil;
         NSMutableSet *knownSubclasses;
         NSEnumerator *enumerator;
         NSValue *aClassValue;
-		
+        
         F53Assert(self == [F53MIDIObject class]);
-		
+        
         // Get the whole list of classes
         numClasses = 0;
         newNumClasses = objc_getClassList(NULL, 0);
@@ -183,22 +183,22 @@ static NSMapTable *_classToObjectsMapTable = nil;
             bzero(classes, numClasses * sizeof(Class));
             newNumClasses = objc_getClassList(classes, numClasses);
         }
-		
+        
         // For each class:
         //    if it is a subclass of this class, add it to knownSubclasses
         knownSubclasses = [NSMutableSet set];
         for (classIndex = 0; classIndex < numClasses; classIndex++) {
             Class aClass = classes[classIndex];
-			
+            
             if (aClass != self && [aClass isSubclassOfClass:self])// F53ClassIsSubclassOfClass(aClass, self))
                 [knownSubclasses addObject:[NSValue valueWithPointer:aClass]];
         }
-		
+        
         free(classes);
-		
+        
         // copy knownSubclasses to leaves
         sLeafSubclasses = [[NSMutableSet alloc] initWithSet:knownSubclasses];
-		
+        
         // Then for each class in knownSubclasses,
         //    if its superclass is in knownSubclasses
         //       remove that superclass from leaves
@@ -213,7 +213,7 @@ static NSMapTable *_classToObjectsMapTable = nil;
         
         // End: we are left with the correct set of leaves.
     }
-	
+    
     return sLeafSubclasses;
 }
 
@@ -221,17 +221,17 @@ static NSMapTable *_classToObjectsMapTable = nil;
 {
     // Go through each of our subclasses and find which one owns objects of this type.
     // TODO: this is kind of inefficient; a map from type to class might be better.
-	
+    
     F53Assert(self == [F53MIDIObject class]);
-	
+    
     for (NSString *subclassString in [self leafSubclasses])
     {
         Class subclass = NSClassFromString(subclassString);
-		
+        
         if ([subclass midiObjectType] == objectType)
             return subclass;
     }
-	
+    
     return Nil;
 }
 
@@ -240,7 +240,7 @@ static NSMapTable *_classToObjectsMapTable = nil;
     if ([[F53MIDIClient sharedClient] coreMIDICanFindObjectByUniqueID]) {
         MIDIObjectRef object = NULL;
         MIDIObjectType type;
-		
+        
         MIDIObjectFindByUniqueID(proposedUniqueID, &object, &type);
         return (object != NULL);
     } else {
@@ -261,13 +261,13 @@ static NSMapTable *_classToObjectsMapTable = nil;
     NSString *propertyName;
     Class subclass;
     F53MIDIObject *object;
-	
+    
     F53Assert(self == [F53MIDIObject class]);
-	
+    
     ref = [[[notification userInfo] objectForKey:F53MIDIClientObjectPropertyChangedObject] pointerValue];
     objectType = [[[notification userInfo] objectForKey:F53MIDIClientObjectPropertyChangedType] intValue];
     propertyName = [[notification userInfo] objectForKey:F53MIDIClientObjectPropertyChangedName];
-	
+    
     subclass = [self subclassForObjectType:objectType];
     object = [subclass objectWithObjectRef:ref];
     [object propertyDidChange:propertyName];
@@ -278,13 +278,13 @@ static NSMapTable *_classToObjectsMapTable = nil;
     MIDIObjectRef ref;
     MIDIObjectType objectType;
     Class subclass;
-	
+    
     F53Assert(self == [F53MIDIObject class]);
-	
+    
     ref = [[[notification userInfo] objectForKey:F53MIDIClientObjectAddedOrRemovedChild] pointerValue];
     F53Assert(ref != NULL);
     objectType = [[[notification userInfo] objectForKey:F53MIDIClientObjectAddedOrRemovedChildType] intValue];
-	
+    
     subclass = [self subclassForObjectType:objectType];
     if (subclass) {
         // We might already have this object. Check and see.
@@ -299,13 +299,13 @@ static NSMapTable *_classToObjectsMapTable = nil;
     MIDIObjectType objectType;
     Class subclass;
     F53MIDIObject *object;
-	
+    
     F53Assert(self == [F53MIDIObject class]);
-	
+    
     ref = [[[notification userInfo] objectForKey:F53MIDIClientObjectAddedOrRemovedChild] pointerValue];
     F53Assert(ref != NULL);
     objectType = [[[notification userInfo] objectForKey:F53MIDIClientObjectAddedOrRemovedChildType] intValue];
-	
+    
     subclass = [self subclassForObjectType:objectType];
     if ((object = [subclass objectWithObjectRef:ref]))
         [subclass immediatelyRemoveObject:object];
@@ -318,45 +318,45 @@ static NSMapTable *_classToObjectsMapTable = nil;
 + (NSMapTable *) midiObjectMapTable
 {
     F53Assert(self != [F53MIDIObject class]);
-	
+    
     return NSMapGet(_classToObjectsMapTable, self);
 }
 
 + (F53MIDIObject *) addObjectWithObjectRef: (MIDIObjectRef) anObjectRef ordinal: (unsigned int) anOrdinal
 {
     F53MIDIObject *object;
-	
+    
     F53Assert(self != [F53MIDIObject class]);
     F53Assert(anObjectRef != NULL);
-	
+    
     object = [[self alloc] initWithObjectRef:anObjectRef ordinal:anOrdinal];
     if (object) {
         NSMapTable *mapTable = [self midiObjectMapTable];
         F53Assert(mapTable != NULL);
-		
+        
         NSMapInsertKnownAbsent(mapTable, anObjectRef, object);
         [object release];
     }
-	
+    
     return object;
 }
 
 + (void) removeObjectWithObjectRef: (MIDIObjectRef) anObjectRef
 {
     NSMapTable *mapTable = [self midiObjectMapTable];
-	
+    
     F53Assert(self != [F53MIDIObject class]);
     F53Assert(mapTable != NULL);
-	
+    
     NSMapRemove(mapTable, anObjectRef);
 }
 
 + (void) refreshObjectOrdinals
 {
     ItemCount index, count;
-	
+    
     F53Assert(self != [F53MIDIObject class]);
-	
+    
     count = [self midiObjectCount];
     for (index = 0; index < count; index++) {
         MIDIObjectRef ref = [self midiObjectAtIndex:index];
@@ -367,14 +367,14 @@ static NSMapTable *_classToObjectsMapTable = nil;
 + (void) midiSetupChanged: (NSNotification *) notification
 {
     F53Assert(self != [F53MIDIObject class]);
-	
+    
     [self refreshAllObjects];
 }
 
 + (void) postObjectListChangedNotification
 {
     F53Assert(self != [F53MIDIObject class]);
-	
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:F53MIDIObjectListChangedNotification object:self];
 }
 
@@ -383,7 +383,7 @@ static NSMapTable *_classToObjectsMapTable = nil;
     NSDictionary *userInfo;
     
     F53Assert(self != [F53MIDIObject class]);
-	
+    
     userInfo = [NSDictionary dictionaryWithObject:objects forKey:F53MIDIObjectsThatAppeared];
     [[NSNotificationCenter defaultCenter] postNotificationName:F53MIDIObjectsAppearedNotification object:self userInfo:userInfo];    
 }
@@ -402,7 +402,7 @@ static NSMapTable *_classToObjectsMapTable = nil;
 - (void) postReplacedNotificationWithReplacement: (F53MIDIObject *) replacement
 {
     NSDictionary *userInfo;
-	
+    
     F53Assert(replacement != NULL);
     userInfo = [NSDictionary dictionaryWithObject:replacement forKey:F53MIDIObjectReplacement];
     [[NSNotificationCenter defaultCenter] postNotificationName:F53MIDIObjectWasReplacedNotification object:self userInfo:userInfo];
@@ -466,10 +466,10 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
 + (NSArray *) allObjects
 {
     NSMapTable *mapTable;
-	
+    
     mapTable = [self midiObjectMapTable];
     F53Assert(mapTable);
-	
+    
     if (mapTable)
         return NSAllMapTableValues(mapTable);
     else
@@ -493,17 +493,17 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
     // However, I bet it's cheaper to look at the local list of unique IDs instead of making a roundtrip to the MIDIServer.
     NSArray *allObjects;
     unsigned int index;
-	
+    
     allObjects = [self allObjects];
     index = [allObjects count];
     while (index--) {
         F53MIDIObject *object;
-		
+        
         object = [allObjects objectAtIndex:index];
         if ([object uniqueID] == aUniqueID)
             return object;
     }
-	
+    
     return nil;
 }
 
@@ -514,19 +514,19 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
 {
     NSArray *allObjects;
     unsigned int index;
-	
+    
     if (!aName) return nil;
-	
+    
     allObjects = [self allObjects];
     index = [allObjects count];
     while (index--) {
         F53MIDIObject *object;
-		
+        
         object = [allObjects objectAtIndex:index];
         if ([[object name] isEqualToString:aName])
             return object;
     }
-	
+    
     return nil;
 }
 
@@ -536,12 +536,12 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
 + (F53MIDIObject *) objectWithObjectRef: (MIDIObjectRef) anObjectRef
 {
     NSMapTable *mapTable;
-	
+    
     if (anObjectRef == NULL) return nil;
     
     mapTable = [self midiObjectMapTable];
     F53Assert(mapTable);
-	
+    
     if (mapTable)
         return NSMapGet(mapTable, anObjectRef);
     else
@@ -556,18 +556,18 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
     static MIDIUniqueID sequence = 0;
     MIDIUniqueID proposed;
     BOOL foundUnique = NO;
-	
+    
     while (!foundUnique) {
         // We could get fancy, but just using the current time is likely to work just fine.
         // Add a sequence number in case this method is called more than once within a second.
         proposed = time(NULL);
         proposed += sequence;
         sequence++;
-		
+        
         // Make sure this uniqueID is not in use, just in case.
         foundUnique = ![self isUniqueIDInUse:proposed];
     }
-	
+    
     return proposed;
 }
 
@@ -575,15 +575,15 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
 {
     if (!(self = [super init]))
         return nil;
-	
+    
     F53Assert(anObjectRef != NULL);
-	
+    
     _objectRef = anObjectRef;
     _ordinal = anOrdinal;
-	
+    
     // Save the object's uniqueID, since it could become inaccessible later (if the object goes away).
     [self updateUniqueID];
-	
+    
     // Nothing has been cached yet.
     _flags.hasCachedName = NO;
     
@@ -602,15 +602,15 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
 {
     if (value == _uniqueID)
         return YES;
-	
+    
     [self checkIfPropertySetIsAllowed];
-	
+    
     MIDIObjectSetIntegerProperty(_objectRef, kMIDIPropertyUniqueID, value);
     // Ignore the error code. We're going to check if our change stuck, either way.
-	
+    
     // Refresh our idea of the unique ID since it may or may not have changed
     [self updateUniqueID];
-	
+    
     return (_uniqueID == value);
 }
 
@@ -644,7 +644,7 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
         _cachedName = [[self stringForProperty:kMIDIPropertyName] retain];
         _flags.hasCachedName = YES;
     }
-	
+    
     return _cachedName;
 }
 
@@ -661,26 +661,26 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
 - (NSDictionary*) allProperties
 {
     id propertyList;
-	
+    
     if (noErr != MIDIObjectGetProperties(_objectRef, (CFPropertyListRef *)&propertyList, NO /* not deep */))
         propertyList = nil;
-	
+    
     return (NSDictionary*)[propertyList autorelease];
 }
 
 - (void) setString: (NSString *) value forProperty: (CFStringRef) property
 {
     OSStatus err;
-	
+    
     [self checkIfPropertySetIsAllowed];
-	
+    
     err = MIDIObjectSetStringProperty(_objectRef, property, (CFStringRef)value);
 }
 
 - (NSString *) stringForProperty: (CFStringRef) property
 {
     NSString *string;
-	
+    
     if (noErr == MIDIObjectGetStringProperty(_objectRef, property, (CFStringRef *)&string))
         return [string autorelease];
     else
@@ -690,9 +690,9 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
 - (void) setInteger: (SInt32) value forProperty: (CFStringRef) property
 {
     OSStatus err;
-	
+    
     [self checkIfPropertySetIsAllowed];
-	
+    
     err = MIDIObjectSetIntegerProperty(_objectRef, property, value);
 }
 
@@ -700,9 +700,9 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
 {
     OSStatus err;
     SInt32 value;
-	
+    
     err = MIDIObjectGetIntegerProperty(_objectRef, property, &value);
-	
+    
     return value;
 }
 
@@ -732,13 +732,13 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
 - (void) propertyDidChange: (NSString *) propertyName
 {
     NSDictionary *userInfo;
-	
+    
     if ([propertyName isEqualToString:(NSString *)kMIDIPropertyName]) {
         _flags.hasCachedName = NO;
     } else if ([propertyName isEqualToString:(NSString *)kMIDIPropertyUniqueID]) {
         [self updateUniqueID];
     }
-	
+    
     userInfo = [NSDictionary dictionaryWithObject:propertyName forKey:F53MIDIObjectChangedPropertyName];
     [[NSNotificationCenter defaultCenter] postNotificationName:F53MIDIObjectPropertyChangedNotification object:self userInfo:userInfo];
 }
@@ -754,21 +754,21 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
 {
     ItemCount objectIndex, objectCount;
     NSMapTable *newMapTable;
-	MIDIObjectRef anObjectRef;
-	
+    MIDIObjectRef anObjectRef;
+    
     F53Assert(self != [F53MIDIObject class]);
-	
+    
     objectCount = [self midiObjectCount];
-	
+    
     newMapTable = NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks, NSObjectMapValueCallBacks, objectCount);
     NSMapInsertKnownAbsent(_classToObjectsMapTable, self, newMapTable);
-	
+    
     // Iterate through the new MIDIObjectRefs and add a wrapper object for each.
     for (objectIndex = 0; objectIndex < objectCount; objectIndex++) {
         anObjectRef = [self midiObjectAtIndex:objectIndex];
         if (anObjectRef == NULL)
             continue;
-		
+        
         [self addObjectWithObjectRef:anObjectRef ordinal:objectIndex];
     }
 }
@@ -781,16 +781,16 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
 + (F53MIDIObject *) immediatelyAddObjectWithObjectRef: (MIDIObjectRef) anObjectRef
 {
     F53MIDIObject *theObject;
-	
+    
     // Use a default ordinal to start.
     theObject = [self addObjectWithObjectRef:anObjectRef ordinal:0];
-	
+    
     // Any of the objects' ordinals may have changed, so refresh them.
     [self refreshObjectOrdinals];
-	
+    
     // And post a notification that the object list has changed.
     [self postObjectListChangedNotification];
-	
+    
     // And post a notification that this object has been added.
     [self postObjectsAddedNotificationWithObjects:[NSArray arrayWithObject:theObject]];
     
@@ -807,16 +807,16 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
     [object retain];
     
     [self removeObjectWithObjectRef:[object objectRef]];
-	
+    
     // Any of the objects' ordinals may have changed, so refresh them.
     [self refreshObjectOrdinals];
-	
+    
     // And post a notification that the object list has changed.
     [self postObjectListChangedNotification];
-	
+    
     // And post a notification that this object has been removed.
     [object postRemovedNotification];
-	
+    
     [object release];
 }
 
@@ -829,16 +829,16 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
     NSMapTable *oldMapTable, *newMapTable;
     ItemCount objectIndex, objectCount;
     NSMutableArray *removedObjects, *replacedObjects, *replacementObjects, *addedObjects;
-	MIDIObjectRef anObjectRef;
-	F53MIDIObject *object;
-	
+    MIDIObjectRef anObjectRef;
+    F53MIDIObject *object;
+    
     F53Assert(self != [F53MIDIObject class]);
-	
+    
     objectCount = [self midiObjectCount];
-	
+    
     oldMapTable = [self midiObjectMapTable];
     newMapTable = NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks, NSObjectMapValueCallBacks, objectCount);
-	
+    
     // We start out assuming all objects have been removed, none have been replaced.
     // As we find out otherwise, we remove some endpoints from removedObjects,
     // and add some to replacedObjects.
@@ -846,13 +846,13 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
     replacedObjects = [NSMutableArray array];
     replacementObjects = [NSMutableArray array];
     addedObjects = [NSMutableArray array];
-	
+    
     // Iterate through the new objectRefs.
     for (objectIndex = 0; objectIndex < objectCount; objectIndex++) {
         anObjectRef = [self midiObjectAtIndex:objectIndex];
         if (anObjectRef == NULL)
             continue;
-		
+        
         if ((object = [self objectWithObjectRef:anObjectRef])) {
             // This objectRef existed previously.
             [removedObjects removeObjectIdenticalTo:object];
@@ -862,7 +862,7 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
             [object setOrdinal:objectIndex];
         } else {
             F53MIDIObject *replacedObject;
-			
+            
             // This objectRef did not previously exist, so create a new object for it.
             // (Don't add it to the map table, though.)
             object = [[[self alloc] initWithObjectRef:anObjectRef ordinal:objectIndex] autorelease];
@@ -877,30 +877,30 @@ NSString *F53MIDIObjectChangedPropertyName = @"F53MIDIObjectChangedPropertyName"
                 }
             }
         }
-		
+        
         if (object)
             NSMapInsert(newMapTable, anObjectRef, object);
     }
-	
+    
     // Now replace the old set of objects with the new one.
     if (oldMapTable)
         NSFreeMapTable(oldMapTable);
     NSMapInsert(_classToObjectsMapTable, self, newMapTable);
-	
+    
     // Make the new group of objects invalidate their cached properties (names and such).
     [[self allObjects] makeObjectsPerformSelector:@selector(invalidateCachedProperties)];
-	
+    
     // Now everything is in place for the new regime.
     // First, post specific notifications for added/removed/replaced objects.
     if ([addedObjects count] > 0)
         [self postObjectsAddedNotificationWithObjects:addedObjects];
     
     [removedObjects makeObjectsPerformSelector:@selector(postRemovedNotification)];
-	
+    
     objectIndex = [replacedObjects count];
     while (objectIndex--)
         [[replacedObjects objectAtIndex:objectIndex] postReplacedNotificationWithReplacement:[replacementObjects objectAtIndex:objectIndex]];
-	
+    
     // Then, post a general notification that the list of objects for this subclass has changed (if it has).
     if ([addedObjects count] > 0 || [removedObjects count] > 0 || [replacedObjects count] > 0)
         [self postObjectListChangedNotification];

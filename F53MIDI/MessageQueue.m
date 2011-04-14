@@ -1,21 +1,21 @@
 /**
 
-@author  Kurt Revis, Christopher Ashworth
-@file    MessageQueue.m
-@date    Created on 8/11/06.
-@brief   
+ @author  Kurt Revis
+ @file    MessageQueue.m
 
-Copyright (c) 2001-2004, Kurt Revis.  All rights reserved.
-Copyright (c) 2006 Christopher Ashworth.  All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-* Neither the name of Kurt Revis, nor Snoize, nor the names of other contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ Copyright (c) 2001-2006, Kurt Revis. All rights reserved.
+ Copyright (c) 2006-2011, Figure 53.
+ 
+ NOTE: F53MIDI is an appropriation of Kurt Revis's SnoizeMIDI. https://github.com/krevis/MIDIApps
+ 
+ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of Kurt Revis, nor Snoize, nor the names of other contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+ 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
 **/
 
 
@@ -38,10 +38,10 @@ static void mainThreadRunLoopSourceCallback(void *info);
 void CreateMessageQueue(MessageQueueHandler inHandler, void *inHandlerRefCon)
 {
     // We should be running in the main thread of the process.
-	
+    
     CFRunLoopSourceContext context;
     int pthreadError;
-	
+    
     handler = inHandler;
     handlerRefCon = inHandlerRefCon;
     
@@ -68,7 +68,7 @@ void CreateMessageQueue(MessageQueueHandler inHandler, void *inHandlerRefCon)
     // Add the run loop source to this run loop
     mainThreadRunLoop = CFRunLoopGetCurrent();
     CFRunLoopAddSource(mainThreadRunLoop, runLoopSource, kCFRunLoopDefaultMode);
-	
+    
     // Create lock
     pthreadError = pthread_mutex_init(&queueLock, NULL);
     if (pthreadError) {
@@ -77,7 +77,7 @@ void CreateMessageQueue(MessageQueueHandler inHandler, void *inHandlerRefCon)
 #endif
         return;
     }
-	
+    
     // Create array for a queue structure
     queueArray = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
     if (!queueArray) {
@@ -95,7 +95,7 @@ void DestroyMessageQueue()
         CFRelease(runLoopSource);
         runLoopSource = NULL;
     }
-	
+    
     if (queueArray) {
         pthread_mutex_destroy(&queueLock);
         CFRelease(queueArray);
@@ -117,7 +117,7 @@ void AddToMessageQueue(CFTypeRef objectToAdd)
     
     // add the object to the queue
     CFArrayAppendValue(queueArray, objectToAdd);
-	
+    
     // release the lock
     pthreadError = pthread_mutex_unlock(&queueLock);
     if (pthreadError) {
@@ -147,12 +147,12 @@ void mainThreadRunLoopSourceCallback(void *info)
 #endif
         return;
     }
-	
+    
     // copy the array of queued objects,
     copiedQueueArray = CFArrayCreateCopy(kCFAllocatorDefault, queueArray);
     // and remove the queued objects
     CFArrayRemoveAllValues(queueArray);
-	
+    
     // release the lock
     pthreadError = pthread_mutex_unlock(&queueLock);
     if (pthreadError) {
@@ -166,10 +166,10 @@ void mainThreadRunLoopSourceCallback(void *info)
     queueCount = CFArrayGetCount(copiedQueueArray);
     for (queueIndex = 0; queueIndex < queueCount; queueIndex++) {
         CFTypeRef object;
-		
+        
         object = (CFDictionaryRef)CFArrayGetValueAtIndex(copiedQueueArray, queueIndex);
         handler(object, handlerRefCon);        
     }
-	
+    
     CFRelease(copiedQueueArray);
 }

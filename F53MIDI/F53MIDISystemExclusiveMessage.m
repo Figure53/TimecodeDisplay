@@ -1,21 +1,21 @@
 /**
 
-@author  Kurt Revis, Christopher Ashworth
-@file    F53MIDISystemExclusiveMessage.m
-@date    Created on 4/03/06.
-@brief   
+ @author  Kurt Revis
+ @file    F53MIDISystemExclusiveMessage.m
 
-Copyright (c) 2001-2006, Kurt Revis.  All rights reserved.
-Copyright (c) 2006 Christopher Ashworth. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-* Neither the name of Kurt Revis, nor Snoize, nor the names of other contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ Copyright (c) 2001-2006, Kurt Revis. All rights reserved.
+ Copyright (c) 2006-2011, Figure 53.
+ 
+ NOTE: F53MIDI is an appropriation of Kurt Revis's SnoizeMIDI. https://github.com/krevis/MIDIApps
+ 
+ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of Kurt Revis, nor Snoize, nor the names of other contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+ 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
 **/
 
 
@@ -50,7 +50,7 @@ static void writeVariableLengthFieldIntoSMF(Byte **pPtr, const UInt32 value);
     messages = [NSMutableArray array];
 
     smfDataLength = [smfData length];
-    if (smfDataLength < 0x16)	// definitely too small
+    if (smfDataLength < 0x16)    // definitely too small
         goto done;
 
     p = [smfData bytes];
@@ -60,7 +60,7 @@ static void writeVariableLengthFieldIntoSMF(Byte **pPtr, const UInt32 value);
     if (CFSwapInt32BigToHost(*(const UInt32 *)p) != 'MThd')
         goto done;
     p += 4;
-    chunkSize = CFSwapInt32BigToHost(*(const UInt32 *)p);	// should be 6, but that could conceivably change, so don't hard-code it
+    chunkSize = CFSwapInt32BigToHost(*(const UInt32 *)p);    // should be 6, but that could conceivably change, so don't hard-code it
     p += 4;
     p += chunkSize;
     if (p >= end)
@@ -80,7 +80,7 @@ static void writeVariableLengthFieldIntoSMF(Byte **pPtr, const UInt32 value);
         p += 4;
         trackChunkEnd = p + chunkSize;
         if (trackChunkEnd > end)
-            goto done;	// this track is supposedly bigger than the file is... unlikely.
+            goto done;    // this track is supposedly bigger than the file is... unlikely.
 
         // Read each event in the track
         runningStatusEventSize = 0;
@@ -112,7 +112,7 @@ static void writeVariableLengthFieldIntoSMF(Byte **pPtr, const UInt32 value);
             } else if (topNibble < 0xF) {
                 // This is a channel event. There may be 1 or 2 more bytes of data, which we can skip.
                 // Also, the file may use "running status" after this point, so remember how big these events are.
-                if (topNibble == 0x0C || topNibble == 0x0D)	// program change or channel aftertouch
+                if (topNibble == 0x0C || topNibble == 0x0D)    // program change or channel aftertouch
                     runningStatusEventSize = 1;
                 else
                     runningStatusEventSize = 2;
@@ -131,7 +131,7 @@ static void writeVariableLengthFieldIntoSMF(Byte **pPtr, const UInt32 value);
 
                     // Now read a variable-length value, which is the number of bytes in this event.
                     eventSize = readVariableLengthFieldFromSMF(&p, trackChunkEnd);
-                    if (p > trackChunkEnd)	// Hitting the end of the track chunk is OK here
+                    if (p > trackChunkEnd)    // Hitting the end of the track chunk is OK here
                         goto done;
 
                     // And skip the rest of the event.
@@ -156,7 +156,7 @@ static void writeVariableLengthFieldIntoSMF(Byte **pPtr, const UInt32 value);
                     // If not, then we expect one or more sysex continuation events later in this track.
                     isCompleteMessage = (*(sysexEnd - 1) == 0xF7);
                     if (isCompleteMessage)
-                        sysexSize--;	// Don't include the trailing 0xF7
+                        sysexSize--;    // Don't include the trailing 0xF7
 
                     if (eventType == 0xF0) {
                         // Starting a sysex message.
@@ -240,7 +240,7 @@ UInt32 readVariableLengthFieldFromSMF(const Byte **pPtr, const Byte *end)
     messageCount = [messages count];
 
     smfDataLength = sizeof(smfHeader);
-    smfDataLength += 4;	// for track length UInt32
+    smfDataLength += 4;    // for track length UInt32
     trackLength = 0;
     
     for (messageIndex = 0; messageIndex < messageCount; messageIndex++) {
@@ -249,7 +249,7 @@ UInt32 readVariableLengthFieldFromSMF(const Byte **pPtr, const Byte *end)
         UInt32 messageLength;
 
         message = [messages objectAtIndex:messageIndex];
-        messageLength = [message otherDataLength];	// without 0xF0, with 0xF7
+        messageLength = [message otherDataLength];    // without 0xF0, with 0xF7
 
         if (messageIndex == 0)
             tickOffset = 0;
@@ -257,9 +257,9 @@ UInt32 readVariableLengthFieldFromSMF(const Byte **pPtr, const Byte *end)
             tickOffset = tickOffsetBetweenMessages;
         trackLength += lengthOfVariableLengthFieldForValue(tickOffset);
         
-        trackLength++;		// for sysex event type (0xF0)
-        trackLength += lengthOfVariableLengthFieldForValue(messageLength);	// for sysex length
-        trackLength += messageLength;		// for sysex data
+        trackLength++;        // for sysex event type (0xF0)
+        trackLength += lengthOfVariableLengthFieldForValue(messageLength);    // for sysex length
+        trackLength += messageLength;        // for sysex data
     }
     trackLength += sizeof(endOfTrackEvent);
     smfDataLength += trackLength;
@@ -282,7 +282,7 @@ UInt32 readVariableLengthFieldFromSMF(const Byte **pPtr, const Byte *end)
         UInt32 messageLength;
 
         message = [messages objectAtIndex:messageIndex];
-        messageLength = [message otherDataLength];	// without 0xF0, with 0xF7
+        messageLength = [message otherDataLength];    // without 0xF0, with 0xF7
 
         // write out varlength offset (0 for 1st msg, 500 for laster messages)
         if (messageIndex == 0)
@@ -631,9 +631,9 @@ void writeVariableLengthFieldIntoSMF(Byte **pPtr, const UInt32 value)
 - (NSData *) receivedData
 {
     if ([self wasReceivedWithEOX])
-        return [self otherData];	// With EOX
+        return [self otherData];    // With EOX
     else
-        return [self data];		// Without EOX
+        return [self data];        // Without EOX
 }
 
 - (unsigned int) receivedDataLength
@@ -705,8 +705,8 @@ void writeVariableLengthFieldIntoSMF(Byte **pPtr, const UInt32 value)
 - (NSString *) sizeForDisplay
 {
     return [NSString stringWithFormat:
-        NSLocalizedStringFromTableInBundle(@"%@ bytes", @"F53MIDI", F53BundleForObject(self), "SysEx length format string"),
-        [F53MIDIMessage formatLength:[self receivedDataWithStartByteLength]]];
+            NSLocalizedStringFromTableInBundle(@"%@ bytes", @"F53MIDI", F53BundleForObject(self), "SysEx length format string"),
+            [F53MIDIMessage formatLength:[self receivedDataWithStartByteLength]]];
 }
 
 @end

@@ -1,21 +1,21 @@
 /**
 
-@author  Kurt Revis, Christopher Ashworth
-@file    F53MIDIEndpoint.m
-@date    Created on Thursday March 9 2006.
-@brief   
+ @author  Kurt Revis
+ @file    F53MIDIEndpoint.m
 
-Copyright (c) 2001-2006, Kurt Revis.  All rights reserved.
-Copyright (c) 2006 Christopher Ashworth. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-* Neither the name of Kurt Revis, nor Snoize, nor the names of other contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ Copyright (c) 2002-2006, Kurt Revis. All rights reserved.
+ Copyright (c) 2006-2011, Figure 53.
+ 
+ NOTE: F53MIDI is an appropriation of Kurt Revis's SnoizeMIDI. https://github.com/krevis/MIDIApps
+ 
+ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of Kurt Revis, nor Snoize, nor the names of other contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+ 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
 **/
 
 #import "F53MIDIEndpoint.h"
@@ -81,13 +81,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     NSArray *nameArray, *nameSet;
     BOOL areNamesUnique;
     struct EndpointUniqueNamesFlags *flagsPtr;
-	
+    
     endpoints = [self allObjects];
     nameArray = [endpoints F53_arrayByMakingObjectsPerformSelector:@selector(name)];
     nameSet = [NSSet setWithArray:nameArray];
-	
+    
     areNamesUnique = ([nameArray count] == [nameSet count]);
-	
+    
     flagsPtr = [self endpointUniqueNamesFlagsPtr];
     flagsPtr->areNamesUnique = areNamesUnique;
     flagsPtr->haveNamesAlwaysBeenUnique = flagsPtr->haveNamesAlwaysBeenUnique && areNamesUnique;
@@ -99,7 +99,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         OSStatus status;
         MIDIEntityRef entity;
         MIDIDeviceRef device;
-		
+        
         status = MIDIEndpointGetEntity((MIDIEndpointRef)_objectRef, &entity);
         if (noErr == status) {
             status = MIDIEntityGetDevice(entity, &device);
@@ -110,26 +110,26 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         // This must be 10.1. Do it the hard way.
         // Walk the device/entity/endpoint tree, looking for the device which has our endpointRef.
         // Note that if this endpoint is virtual, no device will be found.
-		
+        
         ItemCount deviceCount, deviceIndex;
-		
+        
         deviceCount = MIDIGetNumberOfDevices();
         for (deviceIndex = 0; deviceIndex < deviceCount; deviceIndex++) {
             MIDIDeviceRef device;
             ItemCount entityCount, entityIndex;
-			
+            
             device = MIDIGetDevice(deviceIndex);
             entityCount = MIDIDeviceGetNumberOfEntities(device);
-			
+            
             for (entityIndex = 0; entityIndex < entityCount; entityIndex++) {
                 MIDIEntityRef entity;
                 ItemCount endpointCount, endpointIndex;
-				
+                
                 entity = MIDIDeviceGetEntity(device, entityIndex);
                 endpointCount = [[self class] endpointCountForEntity:entity];
                 for (endpointIndex = 0; endpointIndex < endpointCount; endpointIndex++) {
                     MIDIEndpointRef thisEndpoint;
-					
+                    
                     thisEndpoint = [[self class] endpointRefAtIndex:endpointIndex forEntity:entity];
                     if (thisEndpoint == (MIDIEndpointRef)_objectRef) {
                         // Found it!
@@ -139,7 +139,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             }
         }
     }
-	
+    
     // Nothing was found
     return NULL;
 }
@@ -150,7 +150,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         _deviceRef = [self findDevice];
         _endpointFlags.hasLookedForDevice = YES;
     }
-	
+    
     return _deviceRef;
 }
 
@@ -163,7 +163,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     } NS_HANDLER {
         value = 0;
     } NS_ENDHANDLER;
-	
+    
     return value;
 }
 
@@ -177,7 +177,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 - (MIDIDeviceRef) getDeviceRefFromConnectedUniqueID: (MIDIUniqueID) connectedUniqueID
 {
     MIDIDeviceRef returnDeviceRef = NULL;
-	
+    
     if ([[F53MIDIClient sharedClient] coreMIDICanFindObjectByUniqueID]) {
         // 10.2 and later
         MIDIObjectRef connectedObjectRef;
@@ -196,7 +196,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     returnDeviceRef = (MIDIDeviceRef)connectedObjectRef;
                     done = YES;
                     break;
-					
+                    
                 case kMIDIObjectType_Entity:
                     // get the entity's device
                     connectedObjectType = kMIDIObjectType_Device;
@@ -249,11 +249,11 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
 {
     if (!(self = [super initWithObjectRef:anObjectRef ordinal:anOrdinal]))
         return nil;
-	
+    
     // We start out not knowing the endpoint's device (if it has one). We'll look it up on demand.
     _deviceRef = nil;
     _endpointFlags.hasLookedForDevice = NO;
-	
+    
     // Nothing has been cached yet 
     _endpointFlags.hasCachedManufacturerName = NO;
     _endpointFlags.hasCachedModelName = NO;
@@ -269,7 +269,7 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
     _cachedManufacturerName = nil;
     [_cachedModelName release];
     _cachedModelName = nil;
-	
+    
     [super dealloc];
 }
 
@@ -279,7 +279,7 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
 - (void) checkIfPropertySetIsAllowed
 {
     if (![self isOwnedByThisProcess])
-	{
+    {
         [NSException raise:NSGenericException format:NSLocalizedStringFromTableInBundle(@"Can't set a property on an endpoint we don't own", @"F53MIDI", F53BundleForObject(self), "exception if someone tries to set a property on an endpoint we don't own"), nil];
     }
 }
@@ -287,7 +287,7 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
 - (void) invalidateCachedProperties
 {
     [super invalidateCachedProperties];
-	
+    
     _endpointFlags.hasLookedForDevice = NO;
     _endpointFlags.hasCachedManufacturerName = NO;
     _endpointFlags.hasCachedModelName = NO;
@@ -301,7 +301,7 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
         _endpointFlags.hasCachedModelName = NO;
     else if ([propertyName isEqualToString:(NSString *)kMIDIPropertyModel])
         _endpointFlags.hasCachedModelName = NO;
-	
+    
     [super propertyDidChange:propertyName];
 }
 
@@ -331,11 +331,11 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
     // tell if the endpoint is owned by this process until it gets a property set on it.
     // So we'll say that this method should be called first, before any other setters are called.
     
-	/*
+    /*
     if (![self isVirtual]) {
         [NSException raise:NSGenericException format:NSLocalizedStringFromTableInBundle(@"Endpoint is not virtual, so it can't be owned by this process", @"F53MIDI", F53BundleForObject(self), "exception if someone calls -setIsOwnedByThisProcess on a non-virtual endpoint")];
     }
-	 */
+     */
     
     [self setOwnerPID:getpid()];
 }
@@ -347,11 +347,11 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
 {
     if (_objectRef && [self isOwnedByThisProcess]) {        
         MIDIEndpointDispose((MIDIEndpointRef)_objectRef);
-		
+        
         // This object still hangs around in the endpoint lists until CoreMIDI gets around to posting a notification.
         // We should remove it immediately.
         [[self class] immediatelyRemoveObject:self];
-		
+        
         // Now we can forget the _objectRef (not earlier!)
         _objectRef = NULL;
     }
@@ -361,9 +361,9 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
 {
     if (!_endpointFlags.hasCachedManufacturerName) {
         [_cachedManufacturerName release];
-		
+        
         _cachedManufacturerName = [self stringForProperty:kMIDIPropertyManufacturer];
-		
+        
         // NOTE This fails sometimes on 10.1.3 and earlier (see bug #2865704),
         // so we fall back to asking for the device's manufacturer name if necessary.
         // (This bug is fixed in 10.1.5, with CoreMIDI framework version 15.5.)
@@ -371,11 +371,11 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
             if (!_cachedManufacturerName)
                 _cachedManufacturerName = [[self device] manufacturerName];
         }
-		
+        
         [_cachedManufacturerName retain];
         _endpointFlags.hasCachedManufacturerName = YES;        
     }
-	
+    
     return _cachedManufacturerName;
 }
 
@@ -400,10 +400,10 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
     if (!_endpointFlags.hasCachedModelName) {
         [_cachedModelName release];
         _cachedModelName = [[self stringForProperty:kMIDIPropertyModel] retain];
-		
+        
         _endpointFlags.hasCachedModelName = YES;
     }
-	
+    
     return _cachedModelName;
 }
 
@@ -439,17 +439,17 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
 - (NSString *) longName
 {
     NSString *endpointName, *modelOrDeviceName;
-	
+    
     endpointName = [self name];
-	
+    
     if ([self isVirtual]) {
-        modelOrDeviceName = [self modelName];		
+        modelOrDeviceName = [self modelName];        
     } else {
         modelOrDeviceName = [[self device] name];
     }
     
-	if (modelOrDeviceName && [modelOrDeviceName isEqual:endpointName])
-		return endpointName;
+    if (modelOrDeviceName && [modelOrDeviceName isEqual:endpointName])
+        return endpointName;
     else if (modelOrDeviceName && [modelOrDeviceName length] > 0)
         return [[modelOrDeviceName stringByAppendingString:@" "] stringByAppendingString:endpointName];
     else
@@ -484,7 +484,7 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
 {
     MIDIUniqueID oneUniqueID;
     NSData *data;
-	
+    
     // The property for kMIDIPropertyConnectionUniqueID may be an integer or a data object.
     // Try getting it as data first.  (The data is an array of big-endian MIDIUniqueIDs, aka SInt32s.)
     if (noErr == MIDIObjectGetDataProperty(_objectRef, kMIDIPropertyConnectionUniqueID, (CFDataRef *)&data)) {
@@ -496,7 +496,7 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
         // Make sure the data length makes sense
         if (dataLength % sizeof(SInt32) != 0)
             return [NSArray array];
-		
+        
         count = dataLength / sizeof(MIDIUniqueID);
         array = [NSMutableArray arrayWithCapacity:count];
         p = [data bytes];
@@ -505,7 +505,7 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
             if (oneUniqueID != 0)
                 [array addObject:[NSNumber numberWithLong:oneUniqueID]];
         }
-		
+        
         return array;
     }
     
@@ -514,7 +514,7 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
         if (oneUniqueID != 0)
             return [NSArray arrayWithObject:[NSNumber numberWithLong:oneUniqueID]];
     }
-	
+    
     // Give up
     return [NSArray array];
 }
@@ -524,7 +524,7 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
     NSArray *uniqueIDs;
     unsigned int uniqueIDIndex, uniqueIDCount;
     NSMutableArray *externalDevices;
-	
+    
     uniqueIDs = [self uniqueIDsOfConnectedThings];
     uniqueIDCount = [uniqueIDs count];
     externalDevices = [NSMutableArray arrayWithCapacity:uniqueIDCount];
@@ -538,7 +538,7 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
                 [externalDevices addObject:extDevice];
         }
     }    
-	
+    
     return externalDevices;
 }
 
@@ -569,7 +569,7 @@ NSString *F53MIDIEndpointPropertyOwnerPID = @"F53MIDIEndpointPropertyOwnerPID";
 + (F53MIDIObject *) immediatelyAddObjectWithObjectRef: (MIDIObjectRef) anObjectRef
 {
     F53MIDIObject *object;
-	
+    
     object = [super immediatelyAddObjectWithObjectRef:anObjectRef];
     [self checkForUniqueNames];
     return object;

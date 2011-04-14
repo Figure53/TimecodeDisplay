@@ -1,21 +1,21 @@
 /**
 
-@author  Kurt Revis, Christopher Ashworth
-@file    F53MIDIClient.m
-@date    Created on Thursday March 9 2006.
-@brief   
+ @author  Kurt Revis
+ @file    F53MIDIClient.m
 
-Copyright (c) 2001-2004, Kurt Revis.  All rights reserved.
-Copyright (c) 2006 Christopher Ashworth. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-* Neither the name of Kurt Revis, nor Snoize, nor the names of other contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ Copyright (c) 2002-2006, Kurt Revis. All rights reserved.
+ Copyright (c) 2006-2011, Figure 53.
+ 
+ NOTE: F53MIDI is an appropriation of Kurt Revis's SnoizeMIDI. https://github.com/krevis/MIDIApps
+ 
+ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of Kurt Revis, nor Snoize, nor the names of other contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+ 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
 **/
 
 #import "F53MIDIClient.h"
@@ -42,55 +42,55 @@ static void getMIDINotification(const MIDINotification *message, void *refCon);
 - (NSString *) processName;
 {
     NSString *processName;
-	
+    
     processName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleNameKey];
     if (!processName)
         processName = [[NSProcessInfo processInfo] processName];
-	
+    
     return processName;
 }
 
 static void getMIDINotification(const MIDINotification *message, void *refCon)
 {
     F53MIDIClient *client = (F53MIDIClient *)refCon;
-	
+    
     switch (message->messageID) {
-        case kMIDIMsgSetupChanged:	// The only notification in 10.1 and earlier
+        case kMIDIMsgSetupChanged:    // The only notification in 10.1 and earlier
 #if DEBUG
             NSLog(@"setup changed");
 #endif
             [client midiSetupChanged];
             break;
-			
-        case kMIDIMsgObjectAdded:	// Added in 10.2
+            
+        case kMIDIMsgObjectAdded:    // Added in 10.2
 #if DEBUG
             NSLog(@"object added");
 #endif
             [client midiObjectAddedOrRemoved:(const MIDIObjectAddRemoveNotification *)message];
             break;
-			
-        case kMIDIMsgObjectRemoved:	// Added in 10.2
+            
+        case kMIDIMsgObjectRemoved:    // Added in 10.2
 #if DEBUG
             NSLog(@"object removed");
 #endif
             [client midiObjectAddedOrRemoved:(const MIDIObjectAddRemoveNotification *)message];
             break;
-			
-        case kMIDIMsgPropertyChanged:	// Added in 10.2
+            
+        case kMIDIMsgPropertyChanged:    // Added in 10.2
 #if DEBUG
             NSLog(@"property changed");
 #endif
             [client midiObjectPropertyChanged:(const MIDIObjectPropertyChangeNotification *)message];
             break;
-			
-        case kMIDIMsgThruConnectionsChanged:	// Added in 10.2
+            
+        case kMIDIMsgThruConnectionsChanged:    // Added in 10.2
 #if DEBUG
             NSLog(@"thru connections changed");
 #endif
             [client midiThruConnectionsChanged:message];
             break;
-			
-        case kMIDIMsgSerialPortOwnerChanged:	// Added in 10.2
+            
+        case kMIDIMsgSerialPortOwnerChanged:    // Added in 10.2
 #if DEBUG
             NSLog(@"serial port owner changed");
 #endif
@@ -118,24 +118,24 @@ static void getMIDINotification(const MIDINotification *message, void *refCon)
     // will be coalesced into one update at the end.)
     //
     // Fortunately the bug has been fixed in 10.2. This code isn't really expensive, so it doesn't hurt to leave it in.
-	
+    
     static BOOL retryAfterDone = NO;
-	
+    
     if (_isHandlingSetupChange) {
         retryAfterDone = YES;
         return;
     }
-	
+    
     do {
         _isHandlingSetupChange = YES;
         retryAfterDone = NO;
-		
+        
         // Notify the objects internal to this framework about the change first, 
-		// and then let other objects know about it.
+        // and then let other objects know about it.
         [[NSNotificationCenter defaultCenter] postNotificationName:F53MIDIClientSetupChangedInternalNotification object:self];
         if (_postsExternalSetupChangeNotification)
             [[NSNotificationCenter defaultCenter] postNotificationName:F53MIDIClientSetupChangedNotification object:self];
-		
+        
         _isHandlingSetupChange = NO;
     } while (retryAfterDone);
 }
@@ -144,32 +144,32 @@ static void getMIDINotification(const MIDINotification *message, void *refCon)
 {
     NSString *notificationName;
     NSDictionary *userInfo;
-	
+    
     if (message->messageID == kMIDIMsgObjectAdded)
         notificationName = F53MIDIClientObjectAddedNotification;
     else
         notificationName = F53MIDIClientObjectRemovedNotification;
-	
+    
     userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
         [NSValue valueWithPointer:message->parent], F53MIDIClientObjectAddedOrRemovedParent,
         [NSNumber numberWithInt:message->parentType], F53MIDIClientObjectAddedOrRemovedParentType,
         [NSValue valueWithPointer:message->child], F53MIDIClientObjectAddedOrRemovedChild,
         [NSNumber numberWithInt:message->childType], F53MIDIClientObjectAddedOrRemovedChildType,
         nil];
-	
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:userInfo];    
 }
 
 - (void) midiObjectPropertyChanged: (const MIDIObjectPropertyChangeNotification *) message
 {
     NSDictionary *userInfo;
-	
+    
     userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-        [NSValue valueWithPointer:message->object], F53MIDIClientObjectPropertyChangedObject,
-        [NSNumber numberWithInt:message->objectType], F53MIDIClientObjectPropertyChangedType,
-        (NSString *)message->propertyName, F53MIDIClientObjectPropertyChangedName,
-        nil];
-	
+                [NSValue valueWithPointer:message->object], F53MIDIClientObjectPropertyChangedObject,
+                [NSNumber numberWithInt:message->objectType], F53MIDIClientObjectPropertyChangedType,
+                (NSString *)message->propertyName, F53MIDIClientObjectPropertyChangedName,
+                nil];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:F53MIDIClientObjectPropertyChangedNotification object:self userInfo:userInfo];    
 }
 
@@ -191,9 +191,9 @@ static void getMIDINotification(const MIDINotification *message, void *refCon)
 - (void) broadcastGenericMIDINotification: (const MIDINotification *) message withName: (NSString *) notificationName
 {
     NSDictionary *userInfo;
-	
+    
     userInfo = [NSDictionary dictionaryWithObject:[NSValue valueWithPointer:message] forKey:F53MIDIClientMIDINotificationStruct];
-	
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:userInfo];
 }
 
@@ -224,34 +224,34 @@ static F53MIDIClient *_sharedClient = nil;
 
 + (F53MIDIClient *) sharedClient
 {
-	@synchronized(self) {
-		if (!_sharedClient) {
-			_sharedClient = [[self alloc] init];
-			
-			// make sure F53MIDIObject is listening for the notification below
-			[F53MIDIObject class];   // provokes +[F53MIDIObject initialize] if necessary
-			
-			if (_sharedClient)
-				[[NSNotificationCenter defaultCenter] postNotificationName:F53MIDIClientCreatedInternalNotification object:_sharedClient];
-		}
-	}
-	
+    @synchronized(self) {
+        if (!_sharedClient) {
+            _sharedClient = [[self alloc] init];
+            
+            // make sure F53MIDIObject is listening for the notification below
+            [F53MIDIObject class];   // provokes +[F53MIDIObject initialize] if necessary
+            
+            if (_sharedClient)
+                [[NSNotificationCenter defaultCenter] postNotificationName:F53MIDIClientCreatedInternalNotification object:_sharedClient];
+        }
+    }
+    
     return _sharedClient;
 }
 
 - (id) init
 {
     OSStatus status;
-	
+    
     if (!(self = [super init]))
         return nil;
-	
+    
     // Don't let anyone create more than one client.
     if (_sharedClient) {
         [self release];
         return nil;
     }
-	
+    
     _name = [[self processName] retain];
     _postsExternalSetupChangeNotification = YES;
     _isHandlingSetupChange = NO;
@@ -264,19 +264,19 @@ static F53MIDIClient *_sharedClient = nil;
         [self release];
         return nil;
     }
-	
+    
     return self;
 }
 
 - (void) dealloc
 {
     if (_midiClient) MIDIClientDispose(_midiClient);
-	
+    
     [_name release];
     _name = nil;
     [_coreMIDIPropertyNameDictionary release];
     _coreMIDIPropertyNameDictionary = nil;
-	
+    
     [super dealloc];
 }
 
@@ -315,26 +315,26 @@ static F53MIDIClient *_sharedClient = nil;
     // through CFBundle.
     
     id coreMIDIPropertyNameConstant;
-	
+    
     // Look for this name in the cache
     coreMIDIPropertyNameConstant = [_coreMIDIPropertyNameDictionary objectForKey:constantName];
-	
+    
     if (!coreMIDIPropertyNameConstant) {
         // Try looking up a symbol with this name in the CoreMIDI bundle.
         if (_coreMIDIFrameworkBundle) {
             CFStringRef *propertyNamePtr;
-			
+            
             propertyNamePtr = CFBundleGetDataPointerForName(_coreMIDIFrameworkBundle, (CFStringRef)constantName);
             if (propertyNamePtr)
                 coreMIDIPropertyNameConstant = *(id *)propertyNamePtr;
         }
-		
+        
         // If we didn't find it, put an NSNull in the dict instead (so we don't try again to look it up later)
         if (!coreMIDIPropertyNameConstant)
             coreMIDIPropertyNameConstant = [NSNull null];
         [_coreMIDIPropertyNameDictionary setObject:coreMIDIPropertyNameConstant forKey:_name];
     }
-	
+    
     if (coreMIDIPropertyNameConstant == [NSNull null])
         return NULL;
     else
@@ -352,7 +352,7 @@ static F53MIDIClient *_sharedClient = nil;
 // NOTE: CoreMIDI.framework has CFBundleVersion "20" as of 10.2. This translates to 0x20008000.
 const UInt32 kCoreMIDIFrameworkVersionIn10_2 = 0x20008000;
 // CFBundleVersion is "26" as of 10.3 (WWDC build 7A179), which is 0x26008000.
-const UInt32 kCoreMIDIFrameworkVersionIn10_3 = 0x26008000;	// TODO find out what this in in 10.3 GM
+const UInt32 kCoreMIDIFrameworkVersionIn10_3 = 0x26008000;    // TODO find out what this in in 10.3 GM
 
 - (BOOL) postsObjectAddedAndRemovedNotifications
 {

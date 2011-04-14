@@ -1,11 +1,8 @@
 /**
 
-@author  Christopher Ashworth
-@file    F53MIDI.h
-@date    Created on Thursday March 09 2006.
-@brief   Public header files for the F53MIDI framework.
-
-Copyright (c) 2006-2011 Christopher Ashworth. All rights reserved.
+ @file    F53MIDI.h
+ @date    Created on Thursday March 09 2006.
+ @brief   Public header files for the F53MIDI framework.
 
 **/
 
