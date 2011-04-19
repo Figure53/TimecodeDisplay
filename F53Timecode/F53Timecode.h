@@ -5,7 +5,7 @@
  @date Created on May 16, 2008. Last modified December 22, 2010.
  @brief NOTE: This is a 10.4 version, modified to remove Objective-C 2.0 entities such as @property.
  
-  Copyright 2008-2011 Figure 53, LLC.
+ Copyright 2008-2011 Figure 53, LLC. All rights reserved.
 
 **/
 

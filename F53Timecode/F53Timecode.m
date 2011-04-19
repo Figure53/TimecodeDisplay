@@ -3,11 +3,10 @@
  @author Sean Dougall
  @file F53Timecode.m
  @date Created on May 16, 2008. Last modified December 22, 2010.
- @brief
  
  Copyright 2010 Figure 53, LLC. All rights reserved.
  
- **/
+**/
 
 #import "F53Timecode.h"
 

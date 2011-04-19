@@ -16,6 +16,7 @@
 		40CDB88613453C20006A46A2 /* F53Timecode.m in Sources */ = {isa = PBXBuildFile; fileRef = 40CDB88313453C20006A46A2 /* F53Timecode.m */; };
 		83185C90135E256400C9299B /* SnoizeMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83185C8F135E256400C9299B /* SnoizeMIDI.framework */; };
 		83185CB7135E258300C9299B /* SnoizeMIDI.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 83185C8F135E256400C9299B /* SnoizeMIDI.framework */; };
+		83185CE6135E2A2500C9299B /* F53Timecode-OSCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 83185CE5135E2A2500C9299B /* F53Timecode-OSCAdditions.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -55,6 +56,8 @@
 		40CDB88213453C20006A46A2 /* F53Timecode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53Timecode.h; sourceTree = "<group>"; };
 		40CDB88313453C20006A46A2 /* F53Timecode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53Timecode.m; sourceTree = "<group>"; };
 		83185C8F135E256400C9299B /* SnoizeMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SnoizeMIDI.framework; sourceTree = "<group>"; };
+		83185CE4135E2A2500C9299B /* F53Timecode-OSCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "F53Timecode-OSCAdditions.h"; sourceTree = "<group>"; };
+		83185CE5135E2A2500C9299B /* F53Timecode-OSCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "F53Timecode-OSCAdditions.m"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Timecode_Display-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Timecode_Display-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Timecode Display.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Timecode Display.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -141,10 +144,12 @@
 		40CDB87D13453C20006A46A2 /* F53Timecode */ = {
 			isa = PBXGroup;
 			children = (
-				40CDB87E13453C20006A46A2 /* F53Timecode-MTCAdditions.h */,
-				40CDB87F13453C20006A46A2 /* F53Timecode-MTCAdditions.m */,
 				40CDB88213453C20006A46A2 /* F53Timecode.h */,
 				40CDB88313453C20006A46A2 /* F53Timecode.m */,
+				40CDB87E13453C20006A46A2 /* F53Timecode-MTCAdditions.h */,
+				40CDB87F13453C20006A46A2 /* F53Timecode-MTCAdditions.m */,
+				83185CE4135E2A2500C9299B /* F53Timecode-OSCAdditions.h */,
+				83185CE5135E2A2500C9299B /* F53Timecode-OSCAdditions.m */,
 			);
 			path = F53Timecode;
 			sourceTree = "<group>";
@@ -217,6 +222,7 @@
 				40CDB6F51345357D006A46A2 /* MIDIReceiver.m in Sources */,
 				40CDB88413453C20006A46A2 /* F53Timecode-MTCAdditions.m in Sources */,
 				40CDB88613453C20006A46A2 /* F53Timecode.m in Sources */,
+				83185CE6135E2A2500C9299B /* F53Timecode-OSCAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
