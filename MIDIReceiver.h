@@ -7,12 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "F53MIDI.h"
+#import <SnoizeMIDI/SnoizeMIDI.h>
 
-@interface MIDIReceiver : NSObject <F53MIDIMessageDestination>
+@interface MIDIReceiver : NSObject <SMMessageDestination>
 {
     BOOL _online;
-    F53MIDIPortInputStream *_portInputStream;
+    SMPortInputStream *_portInputStream;
     unsigned _h;
     unsigned _m;
     unsigned _s;

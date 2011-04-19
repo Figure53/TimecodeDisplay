@@ -44,7 +44,7 @@
     if (_online)
     {
         // Start (or restart) listening to all ports.
-        [_portInputStream setEndpoints:[NSSet setWithArray:[F53MIDISourceEndpoint sourceEndpoints]]];
+        [_portInputStream setEndpoints:[NSSet setWithArray:[SMSourceEndpoint sourceEndpoints]]];
         [_portInputStream setMessageDestination:self];
     }
     else
@@ -57,11 +57,11 @@
 {
     if (self = [super init])
     {
-        _portInputStream = [F53MIDIPortInputStream new];
+        _portInputStream = [SMPortInputStream new];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(refreshMIDIInputs:)
-                                                     name:@"F53MIDIClientSetupChangedNotification" 
+                                                     name:@"SMClientSetupChangedNotification" 
                                                    object:nil];
     }
     return self;
@@ -82,17 +82,17 @@
     
     int data1;
 	NSData *data;
-    for (F53MIDIMessage *msg in messages)
+    for (SMMessage *msg in messages)
 	{
 		switch ([msg messageType])
 		{
-			case F53MIDIMessageTypeSystemExclusive:
-				data = [(F53MIDISystemExclusiveMessage *)msg fullMessageData];
+			case SMMessageTypeSystemExclusive:
+				data = [(SMSystemExclusiveMessage *)msg fullMessageData];
 				[self sysexReceived:(UInt8 *)[data bytes] length:[data length]];
 				break;
-			case F53MIDIMessageTypeTimeCode:
+			case SMMessageTypeTimeCode:
 				if (!_online) break;
-				data1 = [(F53MIDISystemCommonMessage *)msg dataByte1];
+				data1 = [(SMSystemCommonMessage *)msg dataByte1];
                 if ([[[NSUserDefaultsController sharedUserDefaultsController] defaults] integerForKey:@"debugMTC"] > 0)
                     NSLog(@"MTC in %02x", data1);
 				switch(data1 >> 4) {

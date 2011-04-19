@@ -14,44 +14,26 @@
 		40CDB85313453AFD006A46A2 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40CDB85213453AFD006A46A2 /* CoreMIDI.framework */; };
 		40CDB88413453C20006A46A2 /* F53Timecode-MTCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 40CDB87F13453C20006A46A2 /* F53Timecode-MTCAdditions.m */; };
 		40CDB88613453C20006A46A2 /* F53Timecode.m in Sources */ = {isa = PBXBuildFile; fileRef = 40CDB88313453C20006A46A2 /* F53Timecode.m */; };
-		8331FE1C13574E1200907032 /* ControllerNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8331FDD513574E1200907032 /* ControllerNames.plist */; };
-		8331FE1D13574E1200907032 /* F53MIDI-InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8331FDD713574E1200907032 /* F53MIDI-InfoPlist.strings */; };
-		8331FE1E13574E1200907032 /* F53MIDI.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8331FDD913574E1200907032 /* F53MIDI.strings */; };
-		8331FE1F13574E1200907032 /* ManufacturerNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8331FDDB13574E1200907032 /* ManufacturerNames.plist */; };
-		8331FE2013574E1200907032 /* F53MIDI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8331FDDD13574E1200907032 /* F53MIDI-Info.plist */; };
-		8331FE2113574E1200907032 /* F53MIDIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDE013574E1200907032 /* F53MIDIClient.m */; };
-		8331FE2213574E1200907032 /* F53MIDIDestinationEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDE213574E1200907032 /* F53MIDIDestinationEndpoint.m */; };
-		8331FE2313574E1200907032 /* F53MIDIDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDE413574E1200907032 /* F53MIDIDevice.m */; };
-		8331FE2413574E1200907032 /* F53MIDIEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDE613574E1200907032 /* F53MIDIEndpoint.m */; };
-		8331FE2513574E1200907032 /* F53MIDIExternalDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDE813574E1200907032 /* F53MIDIExternalDevice.m */; };
-		8331FE2613574E1200907032 /* F53MIDIHostTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDEA13574E1200907032 /* F53MIDIHostTime.m */; };
-		8331FE2713574E1200907032 /* F53MIDIInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDEC13574E1200907032 /* F53MIDIInputStream.m */; };
-		8331FE2813574E1200907032 /* F53MIDIInputStreamSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDEE13574E1200907032 /* F53MIDIInputStreamSource.m */; };
-		8331FE2913574E1200907032 /* F53MIDIInvalidMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDF013574E1200907032 /* F53MIDIInvalidMessage.m */; };
-		8331FE2A13574E1200907032 /* F53MIDIMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDF213574E1200907032 /* F53MIDIMessage.m */; };
-		8331FE2B13574E1200907032 /* F53MIDIMessageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDF513574E1200907032 /* F53MIDIMessageFilter.m */; };
-		8331FE2C13574E1200907032 /* F53MIDIMessageMult.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDF713574E1200907032 /* F53MIDIMessageMult.m */; };
-		8331FE2D13574E1200907032 /* F53MIDIMessageParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDF913574E1200907032 /* F53MIDIMessageParser.m */; };
-		8331FE2E13574E1200907032 /* F53MIDIObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDFC13574E1200907032 /* F53MIDIObject.m */; };
-		8331FE2F13574E1200907032 /* F53MIDIOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FDFE13574E1200907032 /* F53MIDIOutputStream.m */; };
-		8331FE3013574E1200907032 /* F53MIDIPortInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE0013574E1200907032 /* F53MIDIPortInputStream.m */; };
-		8331FE3113574E1200907032 /* F53MIDIPortOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE0213574E1200907032 /* F53MIDIPortOutputStream.m */; };
-		8331FE3213574E1200907032 /* F53MIDISourceEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE0413574E1200907032 /* F53MIDISourceEndpoint.m */; };
-		8331FE3313574E1200907032 /* F53MIDISysExSendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE0613574E1200907032 /* F53MIDISysExSendRequest.m */; };
-		8331FE3413574E1200907032 /* F53MIDISystemCommonMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE0813574E1200907032 /* F53MIDISystemCommonMessage.m */; };
-		8331FE3513574E1200907032 /* F53MIDISystemExclusiveMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE0A13574E1200907032 /* F53MIDISystemExclusiveMessage.m */; };
-		8331FE3613574E1200907032 /* F53MIDISystemRealTimeMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE0C13574E1200907032 /* F53MIDISystemRealTimeMessage.m */; };
-		8331FE3713574E1200907032 /* F53MIDIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE0E13574E1200907032 /* F53MIDIUtilities.m */; };
-		8331FE3813574E1200907032 /* F53MIDIVirtualInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE1013574E1200907032 /* F53MIDIVirtualInputStream.m */; };
-		8331FE3913574E1200907032 /* F53MIDIVirtualOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE1213574E1200907032 /* F53MIDIVirtualOutputStream.m */; };
-		8331FE3A13574E1200907032 /* F53MIDIVoiceMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE1413574E1200907032 /* F53MIDIVoiceMessage.m */; };
-		8331FE3B13574E1200907032 /* NSArray-F53MIDIExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE1713574E1200907032 /* NSArray-F53MIDIExtensions.m */; };
-		8331FE3C13574E1200907032 /* NSData-F53MIDIExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE1913574E1200907032 /* NSData-F53MIDIExtensions.m */; };
-		8331FE3D13574E1200907032 /* MessageQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8331FE1B13574E1200907032 /* MessageQueue.m */; };
+		83185C90135E256400C9299B /* SnoizeMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83185C8F135E256400C9299B /* SnoizeMIDI.framework */; };
+		83185CB7135E258300C9299B /* SnoizeMIDI.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 83185C8F135E256400C9299B /* SnoizeMIDI.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		83185CB8135E25A100C9299B /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				83185CB7135E258300C9299B /* SnoizeMIDI.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -72,72 +54,7 @@
 		40CDB87F13453C20006A46A2 /* F53Timecode-MTCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "F53Timecode-MTCAdditions.m"; sourceTree = "<group>"; };
 		40CDB88213453C20006A46A2 /* F53Timecode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53Timecode.h; sourceTree = "<group>"; };
 		40CDB88313453C20006A46A2 /* F53Timecode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53Timecode.m; sourceTree = "<group>"; };
-		8331FDD613574E1200907032 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = English; path = English.lproj/ControllerNames.plist; sourceTree = "<group>"; };
-		8331FDD813574E1200907032 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = "English.lproj/F53MIDI-InfoPlist.strings"; sourceTree = "<group>"; };
-		8331FDDA13574E1200907032 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/F53MIDI.strings; sourceTree = "<group>"; };
-		8331FDDC13574E1200907032 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = English; path = English.lproj/ManufacturerNames.plist; sourceTree = "<group>"; };
-		8331FDDD13574E1200907032 /* F53MIDI-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "F53MIDI-Info.plist"; sourceTree = "<group>"; };
-		8331FDDE13574E1200907032 /* F53MIDI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDI.h; sourceTree = "<group>"; };
-		8331FDDF13574E1200907032 /* F53MIDIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIClient.h; sourceTree = "<group>"; };
-		8331FDE013574E1200907032 /* F53MIDIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIClient.m; sourceTree = "<group>"; };
-		8331FDE113574E1200907032 /* F53MIDIDestinationEndpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIDestinationEndpoint.h; sourceTree = "<group>"; };
-		8331FDE213574E1200907032 /* F53MIDIDestinationEndpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIDestinationEndpoint.m; sourceTree = "<group>"; };
-		8331FDE313574E1200907032 /* F53MIDIDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIDevice.h; sourceTree = "<group>"; };
-		8331FDE413574E1200907032 /* F53MIDIDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIDevice.m; sourceTree = "<group>"; };
-		8331FDE513574E1200907032 /* F53MIDIEndpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIEndpoint.h; sourceTree = "<group>"; };
-		8331FDE613574E1200907032 /* F53MIDIEndpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIEndpoint.m; sourceTree = "<group>"; };
-		8331FDE713574E1200907032 /* F53MIDIExternalDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIExternalDevice.h; sourceTree = "<group>"; };
-		8331FDE813574E1200907032 /* F53MIDIExternalDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIExternalDevice.m; sourceTree = "<group>"; };
-		8331FDE913574E1200907032 /* F53MIDIHostTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIHostTime.h; sourceTree = "<group>"; };
-		8331FDEA13574E1200907032 /* F53MIDIHostTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIHostTime.m; sourceTree = "<group>"; };
-		8331FDEB13574E1200907032 /* F53MIDIInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIInputStream.h; sourceTree = "<group>"; };
-		8331FDEC13574E1200907032 /* F53MIDIInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIInputStream.m; sourceTree = "<group>"; };
-		8331FDED13574E1200907032 /* F53MIDIInputStreamSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIInputStreamSource.h; sourceTree = "<group>"; };
-		8331FDEE13574E1200907032 /* F53MIDIInputStreamSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIInputStreamSource.m; sourceTree = "<group>"; };
-		8331FDEF13574E1200907032 /* F53MIDIInvalidMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIInvalidMessage.h; sourceTree = "<group>"; };
-		8331FDF013574E1200907032 /* F53MIDIInvalidMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIInvalidMessage.m; sourceTree = "<group>"; };
-		8331FDF113574E1200907032 /* F53MIDIMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIMessage.h; sourceTree = "<group>"; };
-		8331FDF213574E1200907032 /* F53MIDIMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIMessage.m; sourceTree = "<group>"; };
-		8331FDF313574E1200907032 /* F53MIDIMessageDestinationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIMessageDestinationProtocol.h; sourceTree = "<group>"; };
-		8331FDF413574E1200907032 /* F53MIDIMessageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIMessageFilter.h; sourceTree = "<group>"; };
-		8331FDF513574E1200907032 /* F53MIDIMessageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIMessageFilter.m; sourceTree = "<group>"; };
-		8331FDF613574E1200907032 /* F53MIDIMessageMult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIMessageMult.h; sourceTree = "<group>"; };
-		8331FDF713574E1200907032 /* F53MIDIMessageMult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIMessageMult.m; sourceTree = "<group>"; };
-		8331FDF813574E1200907032 /* F53MIDIMessageParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIMessageParser.h; sourceTree = "<group>"; };
-		8331FDF913574E1200907032 /* F53MIDIMessageParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIMessageParser.m; sourceTree = "<group>"; };
-		8331FDFA13574E1200907032 /* F53MIDIObject-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "F53MIDIObject-Private.h"; sourceTree = "<group>"; };
-		8331FDFB13574E1200907032 /* F53MIDIObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIObject.h; sourceTree = "<group>"; };
-		8331FDFC13574E1200907032 /* F53MIDIObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIObject.m; sourceTree = "<group>"; };
-		8331FDFD13574E1200907032 /* F53MIDIOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIOutputStream.h; sourceTree = "<group>"; };
-		8331FDFE13574E1200907032 /* F53MIDIOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIOutputStream.m; sourceTree = "<group>"; };
-		8331FDFF13574E1200907032 /* F53MIDIPortInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIPortInputStream.h; sourceTree = "<group>"; };
-		8331FE0013574E1200907032 /* F53MIDIPortInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIPortInputStream.m; sourceTree = "<group>"; };
-		8331FE0113574E1200907032 /* F53MIDIPortOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIPortOutputStream.h; sourceTree = "<group>"; };
-		8331FE0213574E1200907032 /* F53MIDIPortOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIPortOutputStream.m; sourceTree = "<group>"; };
-		8331FE0313574E1200907032 /* F53MIDISourceEndpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDISourceEndpoint.h; sourceTree = "<group>"; };
-		8331FE0413574E1200907032 /* F53MIDISourceEndpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDISourceEndpoint.m; sourceTree = "<group>"; };
-		8331FE0513574E1200907032 /* F53MIDISysExSendRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDISysExSendRequest.h; sourceTree = "<group>"; };
-		8331FE0613574E1200907032 /* F53MIDISysExSendRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDISysExSendRequest.m; sourceTree = "<group>"; };
-		8331FE0713574E1200907032 /* F53MIDISystemCommonMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDISystemCommonMessage.h; sourceTree = "<group>"; };
-		8331FE0813574E1200907032 /* F53MIDISystemCommonMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDISystemCommonMessage.m; sourceTree = "<group>"; };
-		8331FE0913574E1200907032 /* F53MIDISystemExclusiveMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDISystemExclusiveMessage.h; sourceTree = "<group>"; };
-		8331FE0A13574E1200907032 /* F53MIDISystemExclusiveMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDISystemExclusiveMessage.m; sourceTree = "<group>"; };
-		8331FE0B13574E1200907032 /* F53MIDISystemRealTimeMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDISystemRealTimeMessage.h; sourceTree = "<group>"; };
-		8331FE0C13574E1200907032 /* F53MIDISystemRealTimeMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDISystemRealTimeMessage.m; sourceTree = "<group>"; };
-		8331FE0D13574E1200907032 /* F53MIDIUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIUtilities.h; sourceTree = "<group>"; };
-		8331FE0E13574E1200907032 /* F53MIDIUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIUtilities.m; sourceTree = "<group>"; };
-		8331FE0F13574E1200907032 /* F53MIDIVirtualInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIVirtualInputStream.h; sourceTree = "<group>"; };
-		8331FE1013574E1200907032 /* F53MIDIVirtualInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIVirtualInputStream.m; sourceTree = "<group>"; };
-		8331FE1113574E1200907032 /* F53MIDIVirtualOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIVirtualOutputStream.h; sourceTree = "<group>"; };
-		8331FE1213574E1200907032 /* F53MIDIVirtualOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIVirtualOutputStream.m; sourceTree = "<group>"; };
-		8331FE1313574E1200907032 /* F53MIDIVoiceMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F53MIDIVoiceMessage.h; sourceTree = "<group>"; };
-		8331FE1413574E1200907032 /* F53MIDIVoiceMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F53MIDIVoiceMessage.m; sourceTree = "<group>"; };
-		8331FE1613574E1200907032 /* NSArray-F53MIDIExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray-F53MIDIExtensions.h"; sourceTree = "<group>"; };
-		8331FE1713574E1200907032 /* NSArray-F53MIDIExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray-F53MIDIExtensions.m"; sourceTree = "<group>"; };
-		8331FE1813574E1200907032 /* NSData-F53MIDIExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData-F53MIDIExtensions.h"; sourceTree = "<group>"; };
-		8331FE1913574E1200907032 /* NSData-F53MIDIExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData-F53MIDIExtensions.m"; sourceTree = "<group>"; };
-		8331FE1A13574E1200907032 /* MessageQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageQueue.h; sourceTree = "<group>"; };
-		8331FE1B13574E1200907032 /* MessageQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageQueue.m; sourceTree = "<group>"; };
+		83185C8F135E256400C9299B /* SnoizeMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SnoizeMIDI.framework; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Timecode_Display-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Timecode_Display-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Timecode Display.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Timecode Display.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -149,6 +66,7 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				40CDB85313453AFD006A46A2 /* CoreMIDI.framework in Frameworks */,
+				83185C90135E256400C9299B /* SnoizeMIDI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,7 +108,6 @@
 			isa = PBXGroup;
 			children = (
 				40CDB87D13453C20006A46A2 /* F53Timecode */,
-				8331FDD413574E1200907032 /* F53MIDI */,
 				256AC3F00F4B6AF500CF3369 /* Timecode_Display_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
@@ -216,6 +133,7 @@
 				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				40CDB85213453AFD006A46A2 /* CoreMIDI.framework */,
+				83185C8F135E256400C9299B /* SnoizeMIDI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -231,87 +149,6 @@
 			path = F53Timecode;
 			sourceTree = "<group>";
 		};
-		8331FDD413574E1200907032 /* F53MIDI */ = {
-			isa = PBXGroup;
-			children = (
-				8331FDD513574E1200907032 /* ControllerNames.plist */,
-				8331FDD713574E1200907032 /* F53MIDI-InfoPlist.strings */,
-				8331FDD913574E1200907032 /* F53MIDI.strings */,
-				8331FDDB13574E1200907032 /* ManufacturerNames.plist */,
-				8331FDDD13574E1200907032 /* F53MIDI-Info.plist */,
-				8331FDDE13574E1200907032 /* F53MIDI.h */,
-				8331FDDF13574E1200907032 /* F53MIDIClient.h */,
-				8331FDE013574E1200907032 /* F53MIDIClient.m */,
-				8331FDE113574E1200907032 /* F53MIDIDestinationEndpoint.h */,
-				8331FDE213574E1200907032 /* F53MIDIDestinationEndpoint.m */,
-				8331FDE313574E1200907032 /* F53MIDIDevice.h */,
-				8331FDE413574E1200907032 /* F53MIDIDevice.m */,
-				8331FDE513574E1200907032 /* F53MIDIEndpoint.h */,
-				8331FDE613574E1200907032 /* F53MIDIEndpoint.m */,
-				8331FDE713574E1200907032 /* F53MIDIExternalDevice.h */,
-				8331FDE813574E1200907032 /* F53MIDIExternalDevice.m */,
-				8331FDE913574E1200907032 /* F53MIDIHostTime.h */,
-				8331FDEA13574E1200907032 /* F53MIDIHostTime.m */,
-				8331FDEB13574E1200907032 /* F53MIDIInputStream.h */,
-				8331FDEC13574E1200907032 /* F53MIDIInputStream.m */,
-				8331FDED13574E1200907032 /* F53MIDIInputStreamSource.h */,
-				8331FDEE13574E1200907032 /* F53MIDIInputStreamSource.m */,
-				8331FDEF13574E1200907032 /* F53MIDIInvalidMessage.h */,
-				8331FDF013574E1200907032 /* F53MIDIInvalidMessage.m */,
-				8331FDF113574E1200907032 /* F53MIDIMessage.h */,
-				8331FDF213574E1200907032 /* F53MIDIMessage.m */,
-				8331FDF313574E1200907032 /* F53MIDIMessageDestinationProtocol.h */,
-				8331FDF413574E1200907032 /* F53MIDIMessageFilter.h */,
-				8331FDF513574E1200907032 /* F53MIDIMessageFilter.m */,
-				8331FDF613574E1200907032 /* F53MIDIMessageMult.h */,
-				8331FDF713574E1200907032 /* F53MIDIMessageMult.m */,
-				8331FDF813574E1200907032 /* F53MIDIMessageParser.h */,
-				8331FDF913574E1200907032 /* F53MIDIMessageParser.m */,
-				8331FDFA13574E1200907032 /* F53MIDIObject-Private.h */,
-				8331FDFB13574E1200907032 /* F53MIDIObject.h */,
-				8331FDFC13574E1200907032 /* F53MIDIObject.m */,
-				8331FDFD13574E1200907032 /* F53MIDIOutputStream.h */,
-				8331FDFE13574E1200907032 /* F53MIDIOutputStream.m */,
-				8331FDFF13574E1200907032 /* F53MIDIPortInputStream.h */,
-				8331FE0013574E1200907032 /* F53MIDIPortInputStream.m */,
-				8331FE0113574E1200907032 /* F53MIDIPortOutputStream.h */,
-				8331FE0213574E1200907032 /* F53MIDIPortOutputStream.m */,
-				8331FE0313574E1200907032 /* F53MIDISourceEndpoint.h */,
-				8331FE0413574E1200907032 /* F53MIDISourceEndpoint.m */,
-				8331FE0513574E1200907032 /* F53MIDISysExSendRequest.h */,
-				8331FE0613574E1200907032 /* F53MIDISysExSendRequest.m */,
-				8331FE0713574E1200907032 /* F53MIDISystemCommonMessage.h */,
-				8331FE0813574E1200907032 /* F53MIDISystemCommonMessage.m */,
-				8331FE0913574E1200907032 /* F53MIDISystemExclusiveMessage.h */,
-				8331FE0A13574E1200907032 /* F53MIDISystemExclusiveMessage.m */,
-				8331FE0B13574E1200907032 /* F53MIDISystemRealTimeMessage.h */,
-				8331FE0C13574E1200907032 /* F53MIDISystemRealTimeMessage.m */,
-				8331FE0D13574E1200907032 /* F53MIDIUtilities.h */,
-				8331FE0E13574E1200907032 /* F53MIDIUtilities.m */,
-				8331FE0F13574E1200907032 /* F53MIDIVirtualInputStream.h */,
-				8331FE1013574E1200907032 /* F53MIDIVirtualInputStream.m */,
-				8331FE1113574E1200907032 /* F53MIDIVirtualOutputStream.h */,
-				8331FE1213574E1200907032 /* F53MIDIVirtualOutputStream.m */,
-				8331FE1313574E1200907032 /* F53MIDIVoiceMessage.h */,
-				8331FE1413574E1200907032 /* F53MIDIVoiceMessage.m */,
-				8331FE1513574E1200907032 /* Foundation Extensions */,
-				8331FE1A13574E1200907032 /* MessageQueue.h */,
-				8331FE1B13574E1200907032 /* MessageQueue.m */,
-			);
-			path = F53MIDI;
-			sourceTree = "<group>";
-		};
-		8331FE1513574E1200907032 /* Foundation Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				8331FE1613574E1200907032 /* NSArray-F53MIDIExtensions.h */,
-				8331FE1713574E1200907032 /* NSArray-F53MIDIExtensions.m */,
-				8331FE1813574E1200907032 /* NSData-F53MIDIExtensions.h */,
-				8331FE1913574E1200907032 /* NSData-F53MIDIExtensions.m */,
-			);
-			path = "Foundation Extensions";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -320,6 +157,7 @@
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Timecode Display" */;
 			buildPhases = (
 				8D1107290486CEB800E47090 /* Resources */,
+				83185CB8135E25A100C9299B /* Copy Frameworks */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 			);
@@ -364,11 +202,6 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				403697631347934800FD9CC0 /* tcd.icns in Resources */,
-				8331FE1C13574E1200907032 /* ControllerNames.plist in Resources */,
-				8331FE1D13574E1200907032 /* F53MIDI-InfoPlist.strings in Resources */,
-				8331FE1E13574E1200907032 /* F53MIDI.strings in Resources */,
-				8331FE1F13574E1200907032 /* ManufacturerNames.plist in Resources */,
-				8331FE2013574E1200907032 /* F53MIDI-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,35 +217,6 @@
 				40CDB6F51345357D006A46A2 /* MIDIReceiver.m in Sources */,
 				40CDB88413453C20006A46A2 /* F53Timecode-MTCAdditions.m in Sources */,
 				40CDB88613453C20006A46A2 /* F53Timecode.m in Sources */,
-				8331FE2113574E1200907032 /* F53MIDIClient.m in Sources */,
-				8331FE2213574E1200907032 /* F53MIDIDestinationEndpoint.m in Sources */,
-				8331FE2313574E1200907032 /* F53MIDIDevice.m in Sources */,
-				8331FE2413574E1200907032 /* F53MIDIEndpoint.m in Sources */,
-				8331FE2513574E1200907032 /* F53MIDIExternalDevice.m in Sources */,
-				8331FE2613574E1200907032 /* F53MIDIHostTime.m in Sources */,
-				8331FE2713574E1200907032 /* F53MIDIInputStream.m in Sources */,
-				8331FE2813574E1200907032 /* F53MIDIInputStreamSource.m in Sources */,
-				8331FE2913574E1200907032 /* F53MIDIInvalidMessage.m in Sources */,
-				8331FE2A13574E1200907032 /* F53MIDIMessage.m in Sources */,
-				8331FE2B13574E1200907032 /* F53MIDIMessageFilter.m in Sources */,
-				8331FE2C13574E1200907032 /* F53MIDIMessageMult.m in Sources */,
-				8331FE2D13574E1200907032 /* F53MIDIMessageParser.m in Sources */,
-				8331FE2E13574E1200907032 /* F53MIDIObject.m in Sources */,
-				8331FE2F13574E1200907032 /* F53MIDIOutputStream.m in Sources */,
-				8331FE3013574E1200907032 /* F53MIDIPortInputStream.m in Sources */,
-				8331FE3113574E1200907032 /* F53MIDIPortOutputStream.m in Sources */,
-				8331FE3213574E1200907032 /* F53MIDISourceEndpoint.m in Sources */,
-				8331FE3313574E1200907032 /* F53MIDISysExSendRequest.m in Sources */,
-				8331FE3413574E1200907032 /* F53MIDISystemCommonMessage.m in Sources */,
-				8331FE3513574E1200907032 /* F53MIDISystemExclusiveMessage.m in Sources */,
-				8331FE3613574E1200907032 /* F53MIDISystemRealTimeMessage.m in Sources */,
-				8331FE3713574E1200907032 /* F53MIDIUtilities.m in Sources */,
-				8331FE3813574E1200907032 /* F53MIDIVirtualInputStream.m in Sources */,
-				8331FE3913574E1200907032 /* F53MIDIVirtualOutputStream.m in Sources */,
-				8331FE3A13574E1200907032 /* F53MIDIVoiceMessage.m in Sources */,
-				8331FE3B13574E1200907032 /* NSArray-F53MIDIExtensions.m in Sources */,
-				8331FE3C13574E1200907032 /* NSData-F53MIDIExtensions.m in Sources */,
-				8331FE3D13574E1200907032 /* MessageQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,38 +239,6 @@
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		8331FDD513574E1200907032 /* ControllerNames.plist */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8331FDD613574E1200907032 /* English */,
-			);
-			name = ControllerNames.plist;
-			sourceTree = "<group>";
-		};
-		8331FDD713574E1200907032 /* F53MIDI-InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8331FDD813574E1200907032 /* English */,
-			);
-			name = "F53MIDI-InfoPlist.strings";
-			sourceTree = "<group>";
-		};
-		8331FDD913574E1200907032 /* F53MIDI.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8331FDDA13574E1200907032 /* English */,
-			);
-			name = F53MIDI.strings;
-			sourceTree = "<group>";
-		};
-		8331FDDB13574E1200907032 /* ManufacturerNames.plist */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8331FDDC13574E1200907032 /* English */,
-			);
-			name = ManufacturerNames.plist;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -475,6 +247,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -492,6 +268,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Timecode_Display_Prefix.pch;
