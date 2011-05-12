@@ -18,7 +18,7 @@ You can download a pre-built copy of Timecode Display here:
 
 Timecode Display does only one thing: display MIDI timecode. 
 
-It listens to all incoming MIDI Timecode.  And then displays it.
+It listens to all incoming MIDI Timecode (as well as MIDI Machine Code timecode messages).  And then displays it.
 
 How many more ways can I try to explain this?
 
