@@ -22,3 +22,6 @@ It listens to all incoming MIDI Timecode.  And then displays it.
 
 How many more ways can I try to explain this?
 
+## Credits
+
+Special thanks to [Kurt Revis](http://www.snoize.com/), author of [SnoizeMIDI](https://github.com/krevis/MIDIApps).
