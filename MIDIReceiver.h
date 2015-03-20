@@ -37,6 +37,9 @@
     unsigned _s;
     unsigned _f;
     int _tcMode;
+    int _lastReceivedQuarterFrame;
+    NSTimeInterval _timeLastQuarterFrameReceived;
+    NSString *_lastReceivedEndpoint;
 }
 
 @property (assign) BOOL online;

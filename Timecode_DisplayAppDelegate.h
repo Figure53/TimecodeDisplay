@@ -34,6 +34,8 @@
     NSTextField *_timecodeDisplay;
     MIDIReceiver *_midiReceiver;
     float _fontSize;
+    NSTimeInterval _lastFlaggedLoopbackTime;    ///< Keep track of when we were last flagged as receiving multiple sources or a loopback.
+    NSTimer *_loopbackExpireTimer;
 }
 
 @property (assign) IBOutlet NSWindow *displayWindow;
@@ -41,5 +43,6 @@
 
 - (void) setTimecodeString: (NSString *) newString;
 - (void) setFramerateString: (NSString *) newString;
+- (void) flagLoopback;
 
 @end

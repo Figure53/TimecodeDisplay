@@ -100,6 +100,7 @@
     if (!_online) return;
     
     int data1;
+    int quarterFrame;
 	NSData *data;
     for (SMMessage *msg in messages)
 	{
@@ -114,7 +115,20 @@
 				data1 = [(SMSystemCommonMessage *)msg dataByte1];
                 if ([[[NSUserDefaultsController sharedUserDefaultsController] defaults] integerForKey:@"debugMTC"] > 0)
                     NSLog(@"MTC in %02x", data1);
-				switch(data1 >> 4) {
+                quarterFrame = data1 >> 4;
+                if ( ( 8 + quarterFrame - _lastReceivedQuarterFrame ) % 8 != 1
+                    && [NSDate timeIntervalSinceReferenceDate] - _timeLastQuarterFrameReceived < 0.1
+                    && )
+                {
+                    [(Timecode_DisplayAppDelegate *)[NSApp delegate] setFramerateString:@"Multiple sources/loopback"];
+                    _tcMode = -1;
+                }
+                else
+                {
+                    [_lastReceivedEndpoint release];
+                    _lastReceivedEndpoint = [[msg originatingEndpointForDisplay] copy];
+                }
+				switch(quarterFrame) {
 					case 0: [self setLowFF:data1]; break;
 					case 1: [self setHighFF:data1]; break;
 					case 2: [self setLowSS:data1]; break;
@@ -124,6 +138,8 @@
 					case 6: [self setLowHH:data1]; break;
 					case 7: [self setHighHH:data1]; break;
 				}
+                _lastReceivedQuarterFrame = quarterFrame;
+                _timeLastQuarterFrameReceived = [NSDate timeIntervalSinceReferenceDate];
 				break;
 			default:
 				break;
@@ -146,24 +162,27 @@
     if (lastTCMode != _tcMode)
     {
         lastTCMode = _tcMode;
+        NSString *framerateString = @"";
         switch (_tcMode)
         {
             case 0:
-                [(Timecode_DisplayAppDelegate *)[NSApp delegate] setFramerateString:@"24 fps"];
+                framerateString = @"24 fps";
                 break;
             case 1:
-                [(Timecode_DisplayAppDelegate *)[NSApp delegate] setFramerateString:@"25 fps"];
+                framerateString = @"25 fps";
                 break;
             case 2:
-                [(Timecode_DisplayAppDelegate *)[NSApp delegate] setFramerateString:@"30 (29.97) drop-frame"];
+                framerateString = @"30 (29.97) drop-frame";
                 break;
             case 3:
-                [(Timecode_DisplayAppDelegate *)[NSApp delegate] setFramerateString:@"30 (29.97) non-drop"];
+                framerateString = @"30 (29.97) non-drop";
                 break;
             default:
-                [(Timecode_DisplayAppDelegate *)[NSApp delegate] setFramerateString:@"Unknown framerate"];
+                framerateString = @"Unknown framerate";
                 break;
         }
+        if ( _tcMode >= 0 )
+            [(Timecode_DisplayAppDelegate *)[NSApp delegate] setFramerateString:[framerateString stringByAppendingFormat:@" [%@]", _lastReceivedEndpoint]];
     }
 }
 

@@ -110,4 +110,10 @@
     [_timecodeDisplay setFrame:frameRect];
 }
 
+- (void) flagLoopback
+{
+    _lastFlaggedLoopbackTime = [NSDate timeIntervalSinceReferenceDate];
+    [self setFramerateString:@"Multiple sources/loopback"];
+}
+
 @end
