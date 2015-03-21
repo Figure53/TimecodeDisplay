@@ -126,17 +126,17 @@
                     if ([[[NSUserDefaultsController sharedUserDefaultsController] defaults] integerForKey:@"debugMTC"] > 0)
                         NSLog(@"MTC in %02x", data1);
                     quarterFrame = data1 >> 4;
-                    if ( ( 8 + quarterFrame - _lastReceivedQuarterFrame ) % 8 != 1
-                        && [NSDate timeIntervalSinceReferenceDate] - _timeLastQuarterFrameReceived < 0.1 )
-                    {
-                        [self.appDelegate setFramerateString:@"Multiple sources/loopback"];
-                        _tcMode = -1;
-                    }
-                    else
-                    {
+//                    if ( ( 8 + quarterFrame - _lastReceivedQuarterFrame ) % 8 != 1
+//                        && [NSDate timeIntervalSinceReferenceDate] - _timeLastQuarterFrameReceived < 0.1 )
+//                    {
+//                        [self.appDelegate setFramerateString:@"Multiple sources/loopback"];
+//                        _tcMode = -1;
+//                    }
+//                    else
+//                    {
                         [_lastReceivedEndpoint release];
                         _lastReceivedEndpoint = [[msg originatingEndpointForDisplay] copy];
-                    }
+//                    }
                     switch(quarterFrame) {
                         case 0: [self setLowFF:data1]; break;
                         case 1: [self setHighFF:data1]; break;
