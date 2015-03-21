@@ -27,6 +27,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <SnoizeMIDI/SnoizeMIDI.h>
+#import "F53Timecode.h"
 
 @interface MIDIReceiver : NSObject <SMMessageDestination>
 {
@@ -37,9 +38,13 @@
     unsigned _s;
     unsigned _f;
     int _tcMode;
+    int _validMask;
     int _lastReceivedQuarterFrame;
     NSTimeInterval _timeLastQuarterFrameReceived;
+    NSTimeInterval _timeLastFrameReceived;
     NSString *_lastReceivedEndpoint;
+    F53Timecode *_previousTimecode;
+    NSTimer *_freewheelTimer;
 }
 
 @property (assign) BOOL online;

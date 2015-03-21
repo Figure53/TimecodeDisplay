@@ -33,6 +33,8 @@
 
 @interface MIDIReceiver (Private)
 
+- (Timecode_DisplayAppDelegate *)appDelegate;
+
 - (void) setHighHH: (int) h;
 - (void) setLowHH: (int) h;
 - (void) setHighMM: (int) m;
@@ -44,7 +46,13 @@
 
 - (void) refreshMIDIInputs: (NSNotification *) note;
 - (void) sysexReceived: (UInt8 *) sysexData length: (UInt32) length;
+
 - (void) updateTimecodeDisplay;
+- (void) newFrameReceived;
+- (void) endFreewheel:(NSTimer *)timer;
+
+- (NSString *)framerateString;
+- (F53Timecode *)timecode;
 
 @end
 
@@ -76,6 +84,7 @@
 {
     if (self = [super init])
     {
+        _tcMode = -1;
         _portInputStream = [SMPortInputStream new];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -99,52 +108,53 @@
 {
     if (!_online) return;
     
-    int data1;
-    int quarterFrame;
-	NSData *data;
-    for (SMMessage *msg in messages)
-	{
-		switch ([msg messageType])
-		{
-			case SMMessageTypeSystemExclusive:
-				data = [(SMSystemExclusiveMessage *)msg fullMessageData];
-				[self sysexReceived:(UInt8 *)[data bytes] length:[data length]];
-				break;
-			case SMMessageTypeTimeCode:
-				if (!_online) break;
-				data1 = [(SMSystemCommonMessage *)msg dataByte1];
-                if ([[[NSUserDefaultsController sharedUserDefaultsController] defaults] integerForKey:@"debugMTC"] > 0)
-                    NSLog(@"MTC in %02x", data1);
-                quarterFrame = data1 >> 4;
-                if ( ( 8 + quarterFrame - _lastReceivedQuarterFrame ) % 8 != 1
-                    && [NSDate timeIntervalSinceReferenceDate] - _timeLastQuarterFrameReceived < 0.1
-                    && )
-                {
-                    [(Timecode_DisplayAppDelegate *)[NSApp delegate] setFramerateString:@"Multiple sources/loopback"];
-                    _tcMode = -1;
-                }
-                else
-                {
-                    [_lastReceivedEndpoint release];
-                    _lastReceivedEndpoint = [[msg originatingEndpointForDisplay] copy];
-                }
-				switch(quarterFrame) {
-					case 0: [self setLowFF:data1]; break;
-					case 1: [self setHighFF:data1]; break;
-					case 2: [self setLowSS:data1]; break;
-					case 3: [self setHighSS:data1]; break;
-					case 4: [self setLowMM:data1]; break;
-					case 5: [self setHighMM:data1]; break;
-					case 6: [self setLowHH:data1]; break;
-					case 7: [self setHighHH:data1]; break;
-				}
-                _lastReceivedQuarterFrame = quarterFrame;
-                _timeLastQuarterFrameReceived = [NSDate timeIntervalSinceReferenceDate];
-				break;
-			default:
-				break;
-		}
-	}
+    @autoreleasepool {
+        int data1;
+        int quarterFrame;
+        NSData *data;
+        for (SMMessage *msg in messages)
+        {
+            switch ([msg messageType])
+            {
+                case SMMessageTypeSystemExclusive:
+                    data = [(SMSystemExclusiveMessage *)msg fullMessageData];
+                    [self sysexReceived:(UInt8 *)[data bytes] length:[data length]];
+                    break;
+                case SMMessageTypeTimeCode:
+                    if (!_online) break;
+                    data1 = [(SMSystemCommonMessage *)msg dataByte1];
+                    if ([[[NSUserDefaultsController sharedUserDefaultsController] defaults] integerForKey:@"debugMTC"] > 0)
+                        NSLog(@"MTC in %02x", data1);
+                    quarterFrame = data1 >> 4;
+                    if ( ( 8 + quarterFrame - _lastReceivedQuarterFrame ) % 8 != 1
+                        && [NSDate timeIntervalSinceReferenceDate] - _timeLastQuarterFrameReceived < 0.1 )
+                    {
+                        [self.appDelegate setFramerateString:@"Multiple sources/loopback"];
+                        _tcMode = -1;
+                    }
+                    else
+                    {
+                        [_lastReceivedEndpoint release];
+                        _lastReceivedEndpoint = [[msg originatingEndpointForDisplay] copy];
+                    }
+                    switch(quarterFrame) {
+                        case 0: [self setLowFF:data1]; break;
+                        case 1: [self setHighFF:data1]; break;
+                        case 2: [self setLowSS:data1]; break;
+                        case 3: [self setHighSS:data1]; break;
+                        case 4: [self setLowMM:data1]; break;
+                        case 5: [self setHighMM:data1]; break;
+                        case 6: [self setLowHH:data1]; break;
+                        case 7: [self setHighHH:data1]; break;
+                    }
+                    _lastReceivedQuarterFrame = quarterFrame;
+                    _timeLastQuarterFrameReceived = [NSDate timeIntervalSinceReferenceDate];
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }
 
 @end
@@ -152,38 +162,50 @@
 
 @implementation MIDIReceiver (Private)
 
+- (Timecode_DisplayAppDelegate *)appDelegate
+{
+    return (Timecode_DisplayAppDelegate *)[NSApp delegate];
+}
+
 - (void) updateTimecodeDisplay
 {
-    F53Timecode *tc = [F53Timecode timecodeWithFramerate:[F53Timecode framerateForMTCIndex:_tcMode] hh:_h mm:_m ss:_s ff:_f];
+    F53Timecode *tc = self.timecode;
     NSString *newTCString = [tc stringRepresentation];
-    [(Timecode_DisplayAppDelegate *)[NSApp delegate] setTimecodeString:newTCString];
+    [self.appDelegate setTimecodeString:newTCString];
     
     static int lastTCMode = -1;
     if (lastTCMode != _tcMode)
     {
         lastTCMode = _tcMode;
-        NSString *framerateString = @"";
-        switch (_tcMode)
-        {
-            case 0:
-                framerateString = @"24 fps";
-                break;
-            case 1:
-                framerateString = @"25 fps";
-                break;
-            case 2:
-                framerateString = @"30 (29.97) drop-frame";
-                break;
-            case 3:
-                framerateString = @"30 (29.97) non-drop";
-                break;
-            default:
-                framerateString = @"Unknown framerate";
-                break;
-        }
+        NSString *framerateString = [self framerateString];
         if ( _tcMode >= 0 )
-            [(Timecode_DisplayAppDelegate *)[NSApp delegate] setFramerateString:[framerateString stringByAppendingFormat:@" [%@]", _lastReceivedEndpoint]];
+            [self.appDelegate setFramerateString:[framerateString stringByAppendingFormat:@" [%@]", _lastReceivedEndpoint]];
     }
+}
+
+- (void) newFrameReceived
+{
+    if ( _tcMode == -1 || _validMask != 0xFF )
+        return;
+    
+    if ( [NSDate timeIntervalSinceReferenceDate] - _timeLastFrameReceived > 0.1 ) // It's been long enough that this is a new start.
+    {
+        [self.appDelegate appendLogEntry:[NSString stringWithFormat:@"MTC start at %@ / %@", self.timecode.stringRepresentation, self.framerateString]];
+    }
+    else
+    {
+        if ( [self.timecode framesFromTimecode:_previousTimecode] != 1 )
+        {
+            [self.appDelegate appendLogEntry:[NSString stringWithFormat:@"MTC discontinuity - from %@ to %@", _previousTimecode.stringRepresentation, self.timecode.stringRepresentation]];
+        }
+    }
+    
+    [_previousTimecode autorelease];
+    _previousTimecode = [self.timecode copy];
+    _timeLastFrameReceived = [NSDate timeIntervalSinceReferenceDate];
+    [self updateTimecodeDisplay];
+    [_freewheelTimer invalidate];
+    _freewheelTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector( endFreewheel: ) userInfo:nil repeats:NO];
 }
 
 - (void) setHighHH: (int) h
@@ -191,45 +213,53 @@
 	_h = (_h & 0x0F) | ((h & 0x01) << 4); 
 	_tcMode = ((h & 0x06) >> 1);
     _f++;
-	
-    [self updateTimecodeDisplay];
+    _validMask |= 0x80;
+    
+    [self newFrameReceived];
 }
 
 - (void) setLowHH: (int) h
 {
     _h = (_h & 0xF0) | (h & 0x0F);
+    _validMask |= 0x40;
 }
 
 - (void) setHighMM: (int) m
 {
     _m = (_m & 0x0F) | ((m & 0x0F) << 4);
+    _validMask |= 0x20;
 }
 
 - (void) setLowMM: (int) m
 {
-    _m = (_m & 0xF0) | (m & 0x0F); 
+    _m = (_m & 0xF0) | (m & 0x0F);
+    _validMask |= 0x10;
 }
 
 - (void) setHighSS: (int) s 
 { 
 	_s = (_s & 0x0F) | ((s & 0x0F) << 4); 
-	if (_s == 0 && _f == 0) _m++;	// Because of the way MTC is structured, the minutes place won't be updated on the frame where it changes over. Dumb? Yes. But this fixes it.
-    [self updateTimecodeDisplay];
+	if (_s == 0 && ( _f == 0 || ( _f == 2 && _tcMode == kF53MTCFramerateIndex30df ) ) ) _m++;	// Because of the way MTC is structured, the minutes place won't be updated on the frame where it changes over. Dumb? Yes. But this fixes it.
+    _validMask |= 0x8;
+    [self newFrameReceived];
 }
 
 - (void) setLowSS: (int) s
 {
     _s = (_s & 0xF0) | (s & 0x0F);
+    _validMask |= 0x4;
 }
 
 - (void) setHighFF: (int) f 
 {
     _f = (_f & 0x0F) | ((f & 0x0F) << 4);
+    _validMask |= 0x2;
 }
 
 - (void) setLowFF: (int) f
 {
     _f = (_f & 0xF0) | (f & 0x0F);
+    _validMask |= 0x1;
 }
 
 
@@ -249,6 +279,7 @@
 			_f = sysexData[8];
 			
 			[self updateTimecodeDisplay];
+            [self.appDelegate appendLogEntry:[NSString stringWithFormat:@"MTC full-frame %@ / %@", self.timecode.stringRepresentation, self.framerateString]];
 			return;
 		}
 	}
@@ -270,6 +301,7 @@
 			_f = sysexData[10];
 			
 			[self updateTimecodeDisplay];
+            [self.appDelegate appendLogEntry:[NSString stringWithFormat:@"MMC Goto %@ / %@", self.timecode.stringRepresentation, self.framerateString]];
 			return;
         }
     }
@@ -278,6 +310,39 @@
 - (void) refreshMIDIInputs: (NSNotification *) note
 {
     self.online = YES;
+}
+
+- (NSString *) framerateString
+{
+    switch (_tcMode)
+    {
+        case 0:
+            return @"24 fps";
+        case 1:
+            return @"25 fps";
+        case 2:
+            return @"30 (29.97) drop-frame";
+        case 3:
+            return @"30 (29.97) non-drop";
+        default:
+            return @"Unknown framerate";
+    }
+}
+
+- (F53Timecode *)timecode
+{
+    return [F53Timecode timecodeWithFramerate:[F53Timecode framerateForMTCIndex:_tcMode] hh:_h mm:_m ss:_s ff:_f];
+}
+
+- (void) endFreewheel:(NSTimer *)timer
+{
+    if ( [NSDate timeIntervalSinceReferenceDate] - _timeLastFrameReceived > 0.1 )
+    {
+        [self.appDelegate appendLogEntry:[NSString stringWithFormat:@"MTC stop at %@", _previousTimecode.stringRepresentation]];
+        _tcMode = -1;
+        _validMask = 0;
+    }
+    _freewheelTimer = nil;
 }
 
 @end

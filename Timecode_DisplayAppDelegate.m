@@ -33,12 +33,26 @@
 
 @synthesize displayWindow = _displayWindow;
 @synthesize timecodeDisplay = _timecodeDisplay;
+@synthesize logWindow = _logWindow;
+@synthesize eventLog = _eventLog;
+
+- (NSDateFormatter *) logDateFormatter
+{
+    if ( !_logDateFormatter )
+    {
+        _logDateFormatter = [NSDateFormatter new];
+        _logDateFormatter.dateStyle = NSDateFormatterMediumStyle;
+        _logDateFormatter.timeStyle = NSDateFormatterMediumStyle;
+    }
+    return _logDateFormatter;
+}
 
 - (id) init
 {
     if (self = [super init])
     {
         _midiReceiver = [MIDIReceiver new];
+        _eventLogContent = @"";
     }
     return self;
 }
@@ -54,6 +68,29 @@
 - (void) applicationDidFinishLaunching: (NSNotification *) aNotification
 {
     _midiReceiver.online = YES;
+    [self appendLogEntry:@"Listening to available MIDI endpoints..."];
+}
+
+- (IBAction)showTimecodeDisplayWindow:(id)sender
+{
+    [self.displayWindow makeKeyAndOrderFront:self];
+}
+
+- (IBAction)showEventLogWindow:(id)sender
+{
+    [self.logWindow makeKeyAndOrderFront:self];
+    [self.eventLog setString:_eventLogContent];
+    [self.eventLog setTextColor:[NSColor colorWithCalibratedWhite:0.9 alpha:1.0]];
+    [self.eventLog setNeedsDisplay:YES];
+}
+
+- (IBAction)clearLog:(id)sender
+{
+    [_eventLogContent autorelease];
+    _eventLogContent = @"";
+    [self.eventLog setString:_eventLogContent];
+    [self.eventLog setTextColor:[NSColor colorWithCalibratedWhite:0.9 alpha:1.0]];
+    [self.eventLog setNeedsDisplay:YES];
 }
 
 - (void) setTimecodeString: (NSString *) newString
@@ -114,6 +151,14 @@
 {
     _lastFlaggedLoopbackTime = [NSDate timeIntervalSinceReferenceDate];
     [self setFramerateString:@"Multiple sources/loopback"];
+}
+
+- (void) appendLogEntry:(NSString *)entry
+{
+    [_eventLogContent autorelease];
+    _eventLogContent = [[_eventLogContent stringByAppendingFormat:@"%@: %@\n", [self.logDateFormatter stringFromDate:[NSDate date]], entry] copy];
+    [self.eventLog setString:_eventLogContent];
+    [self.eventLog setTextColor:[NSColor colorWithCalibratedWhite:0.9 alpha:1.0]];
 }
 
 @end

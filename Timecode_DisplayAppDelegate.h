@@ -32,17 +32,29 @@
 {
     NSWindow *_displayWindow;
     NSTextField *_timecodeDisplay;
+    NSPanel *_logWindow;
+    NSTextView *_eventLog;
+    NSString *_eventLogContent;
     MIDIReceiver *_midiReceiver;
     float _fontSize;
     NSTimeInterval _lastFlaggedLoopbackTime;    ///< Keep track of when we were last flagged as receiving multiple sources or a loopback.
     NSTimer *_loopbackExpireTimer;
+    NSDateFormatter *_logDateFormatter;
 }
 
 @property (assign) IBOutlet NSWindow *displayWindow;
 @property (assign) IBOutlet NSTextField *timecodeDisplay;
+@property (assign) IBOutlet NSPanel *logWindow;
+@property (assign) IBOutlet NSTextView *eventLog;
+@property (readonly) NSDateFormatter *logDateFormatter;
 
-- (void) setTimecodeString: (NSString *) newString;
-- (void) setFramerateString: (NSString *) newString;
+- (IBAction) showTimecodeDisplayWindow:(id)sender;
+- (IBAction) showEventLogWindow:(id)sender;
+- (IBAction) clearLog:(id)sender;
+
+- (void) setTimecodeString:(NSString *)newString;
+- (void) setFramerateString:(NSString *)newString;
 - (void) flagLoopback;
+- (void) appendLogEntry:(NSString *)entry;
 
 @end
