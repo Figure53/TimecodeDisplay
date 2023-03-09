@@ -1,0 +1,11 @@
+framework module SnoizeMIDI {
+  umbrella header "SnoizeMIDI.h"
+
+  export *
+  module * { export * }
+}
+
+module SnoizeMIDI.Swift {
+  header "SnoizeMIDI-Swift.h"
+  requires objc
+}
